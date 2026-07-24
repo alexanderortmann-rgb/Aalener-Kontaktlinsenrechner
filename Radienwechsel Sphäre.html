@@ -1,0 +1,223 @@
+<!-- 
+Copyright (c) 2025 [Alexander Ortmann]
+Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radienwechsel</title>
+    <link rel="stylesheet" href="Style_HTML.css">
+    <style>
+    
+    .column {
+    float: left;
+    width: 45.0%;
+    padding: 15px;
+}
+@media screen and (max-width:600px) {
+    .column {
+        width: 90%;
+    }
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: #111;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #b6b6b6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>
+</head>
+<body>
+	
+	<ul id="Links"></ul> 
+    
+    <br>
+    <h1>Radienwechsel</h1>
+    
+    <form id="Radienumrechner" action="/HSA_Umrechner/RadS" method="post">
+        <p>Daten alte Kontaktlinse</p>
+        <br>
+        
+        <div class="row">
+        <div class="column">
+        <label for="SPHa">Sphäre (dpt)</label>
+        <input type="number" id="SPHa" name="SPHa" step="0.25" value="0" required>
+        </div>
+        <div class="column">
+        <label for="Rfla">Basiskurve (mm)</label>
+        <input type="number" id="Rfla" name="Rfla" step="0.05" value="8" required>
+        
+        </div>
+        
+        </div>
+        
+        
+        <p>Daten neue Kontaktlinse</p>
+        
+        <div class="row">
+        <div class="column">
+        <label for="Rfln">Basiskurve (mm)</label>
+        <input type="number" id="Rfln" name="Rfln" step="0.05" value="8" required>
+        <br>
+        </div>
+        </div>
+        
+        <button type="button" onclick="berechne()">Berechnen</button>
+        <br>
+        <p>Ergebnis: <br>Sph: <span id="SPHn">&emsp;&emsp;</span> dpt 
+        </p>
+        <br>
+        
+        <details>
+        <summary>Rundung auswählen: </summary>
+        
+        <br>
+        <input type="radio" id="round25" name="rounding" value="4" checked> 
+        <label for="round25">0,25</label>
+        
+        <input type="radio" id="round12" name="rounding" value="8"> 
+        <label for="round12">0,12</label>
+        
+        <input type="radio" id="round01" name="rounding" value="100"> 
+        <label for="round01">0,01</label>
+        
+        </details>
+        
+         <details>
+    <summary>Hilfe</summary>
+    <p>
+        Der Radienwechselrechner passt die Stärke der Kontaktlinse im Falle einer Radienänderung an. Für jeden Hauptschnitt, der von einer Radienänderung betroffen ist, wird ein neuer Wert berechnet, der auf dem Auge den gleichen Effekt erzielt wie die vorherige Linse.
+    </p>
+    <p>
+        Ein weiterer Anwendungsfall ist beispielsweise die Rückrechnung auf die vorhandene Myopie bei Orthokeratologie-Kontaktlinsen. In diesem Fall muss im Feld für die "alte Kontaktlinse" die Basiskurve der Ortho-K-Linse, in der Sphäre die Zielrefraktion (beispielsweise 0,75 dpt), und im Feld "Daten der neuen Kontaktlinse" der Radius der Hornhaut des Probanden eingetragen werden.
+    </p>
+</details>
+
+    </form>
+    
+   <footer>
+    <p>Alle Angaben ohne Gewähr.</p>
+  <span id="footer"></span>
+</footer>
+    <script>
+    
+    window.onload = function() {
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            // Ersetze das Eingabefeld durch ein text-input, wenn es sich um ein mobiles Gerät handelt
+            var inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(function(input) {
+                var parent = input.parentNode;
+                var newInput = document.createElement("input");
+                newInput.type = "text";
+                newInput.id = input.id;
+                newInput.name = input.name;
+                newInput.value = input.value;
+                newInput.required = input.required;
+                newInput.oninput = function() {
+                    this.value = this.value.replace(/[^-0-9.,]/g, '');
+                };
+                parent.replaceChild(newInput, input);
+            });
+        }
+    };
+        
+  //Footer mit Infos laden
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      })
+    .catch(error => console.error('Error loading footer.html:', error));
+    
+
+    function berechne() {
+        // Einlesen
+        var Rfla = parseFloat(document.getElementById('Rfla').value);
+        var Rfln = parseFloat(document.getElementById('Rfln').value);
+        var SPHa = parseFloat(document.getElementById('SPHa').value);
+        var Rundung = parseFloat(getRoundingValue());
+        
+        try {
+           
+            //Berechnungen
+            Rfla = Rfla / 1000;
+            Rfln = Rfln / 1000;
+
+            var STLfl = 0.336 * (1 / Rfla - 1 / Rfln);
+            var SPHn = SPHa + STLfl;
+            SPHn = round(SPHn,Rundung);
+
+            // Ergebnisanzeige
+            var Ergebnis =  SPHn
+            document.getElementById('SPHn').innerHTML = Ergebnis;
+
+        } catch (e) {
+            document.getElementById('SPHn').innerHTML = 'Invalid input';
+        }
+    }
+  //Den Rundungswert einlesen
+   function getRoundingValue() {
+    	var radios = document.querySelector('input[name="rounding"]:checked');
+    	return radios ? parseFloat(radios.value) : 4;
+    }
+    function round(value, interval) {
+        return Math.round(value * interval) / interval;
+    }
+          
+  //Head mit Links laden
+    fetch('Links.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('Links').innerHTML = data;
+      })
+    .catch(error => console.error('Error loading Links.html:', error));
+  
+    </script>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AndroidApp</title>
+<link rel="stylesheet" href="Style_HTML.css">
+</head>
+<style>
+  .column {
+    float: left;
+    width: 45.0%;
+    padding: 15px;
+}
+@media screen and (max-width:600px) {
+    .column {
+        width: 90%;
+    }
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: #111;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #b6b6b6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+form {
+    background-color: #e9feec;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    margin: 20px auto;
+}
+.liste { 
+        padding-left: 20px;
+        background-color: transparent;
+        }
+        
+.button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #96d196;
+            color: #400040;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #4cae4c;
+        }
+
+</style>
+<body>
+<ul id="Links"></ul>
+
+<form>
+
+<h2>Android App</h2>
+
+<p>Die Webapp steht auch als Android App zur Verfügung.</p>
+
+<p>Die Android Version ist aufs Handy optimiert und bietet viele Funktionen der Webapp offline für unterwegs an.</p>
+
+<p><a href="Aalener Kontaktlinsenrechner.zip" class="button" download>Android App herunterladen</a></p>
+
+<p>Ich hoffe dir gefällt die App! Alternativ gibt es sie auch noch im Google Play Store.</p>
+
+</form>
+<footer>
+<span id="footer"></span>
+</footer>
+</body>
+<script type="text/javascript">
+
+//Head mit Links laden
+fetch('Links.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('Links').innerHTML = data;
+  })
+.catch(error => console.error('Error loading Links.html:', error));
+
+//Footer mit Infos laden
+fetch('footer.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('footer').innerHTML = data;
+  })
+.catch(error => console.error('Error loading footer.html:', error));
+
+</script>
+</html>

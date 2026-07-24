@@ -1,0 +1,257 @@
+<!-- 
+Copyright (c) 2025 [Alexander Ortmann]
+Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSA Umrechner</title>
+    
+    <style>
+    
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: #111;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #b6b6b6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+</style>
+<link rel="stylesheet" href="Style_HTML.css">
+</head>
+<body>
+	
+	
+	<ul id="Links"></ul>
+    
+    <br>
+    <div class="container">
+    <h1>HSA Umrechner</h1>
+    
+    
+    <form id="HSAForm" action="/HSA_Umrechner/HSA" method="post">
+        
+        
+        <div class="row">
+        <div class="column">
+        <label for="hsa1">HSA alt (mm):</label>
+        <input type="number" id="hsa1" name="hsa1" min="0" value="0" step="1" required>
+        <br>
+        </div>
+        <div class="column">
+        <label for="hsa2">HSA neu (mm):</label>
+        <input type="number" id="hsa2" name="hsa2" min="0" value="0" step="1" required>
+        <br>
+        </div>
+       
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="sph1">Sphäre (dpt)</label>
+        
+        <input type="number" id="sph1" name="sph1" value="0" step="0.25" required>
+        </div>
+        <div class="column">
+        <label for="cyl1">Zylinder (dpt)</label>
+        <input type="number" id="cyl1" name="cyl1" value="0" step="0.25" required>
+        </div>
+        <div class="column">
+        <label for="a1">Achse (°)</label>
+        <input type="number" id="a1" name="a1" value="0" step="1" required>
+        </div>
+        </div>
+        <br>
+        
+        <button type="button" onclick="berechne()">Umrechnen</button>
+        <br>
+        <p>Ergebnis: <br><br>Sph: <span id="SPHn">&emsp;&emsp;</span>
+         dpt &nbsp; Cyl: <span id="CYLn">&emsp;&emsp;</span>
+          dpt &nbsp; Achse: <span id="An">&emsp;&emsp;</span>°
+          </p>
+        <br>
+        
+        <details>
+        <summary>Rundung auswählen: </summary>
+        
+        <br>
+        <input type="radio" id="round25" name="rounding" value="4" checked> 
+        <label for="round25">0,25</label>
+        
+        <input type="radio" id="round12" name="rounding" value="8"> 
+        <label for="round12">0,12</label>
+        
+        <input type="radio" id="round01" name="rounding" value="100"> 
+        <label for="round01">0,01</label>
+        
+        </details>
+        </div>
+        
+    </form>
+    </body>
+   <footer>
+    <p>Alle Angaben ohne Gewähr.</p>
+  <span id="footer"></span>
+</footer>
+    <script>
+    
+    window.onload = function() {
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            // Ersetze das Eingabefeld durch ein text-input, wenn es sich um ein mobiles Gerät handelt
+            var inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(function(input) {
+                var parent = input.parentNode;
+                var newInput = document.createElement("input");
+                newInput.type = "text";
+                newInput.id = input.id;
+                newInput.name = input.name;
+                newInput.value = input.value;
+                newInput.required = input.required;
+                newInput.oninput = function() {
+                    this.value = this.value.replace(/[^-0-9.,]/g, '');
+                };
+                parent.replaceChild(newInput, input);
+            });
+        }
+    };
+        
+  //Footer mit Infos laden
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      })
+    .catch(error => console.error('Error loading footer.html:', error));
+    
+    document.getElementById('a1').addEventListener('input', function() {
+    	var a1 = parseFloat(document.getElementById('a1').value);
+    	if (a1 < 0) {
+    	    a1 += 180;
+    	} else if (a1 >= 180) {
+    	    a1 -= 180;
+    	}
+    	document.getElementById('a1').value = a1;
+    });
+
+    function berechne() {
+        // Einlesen
+        var HSAa = parseFloat(document.getElementById('hsa1').value);
+        var HSAn = parseFloat(document.getElementById('hsa2').value);
+        var SPHa = parseFloat(document.getElementById('sph1').value);
+        var CYLa = parseFloat(document.getElementById('cyl1').value);
+        var Aa = parseFloat(document.getElementById('a1').value);
+        
+        var Rundung = parseFloat(getRoundingValue());
+        
+        var HS1a, HS2a, HS1n, HS2n, SPHn, CYLn, An;
+        
+        try {
+           
+        	if (CYLa <0) {
+            	HS1a = SPHa + CYLa;
+            	HS2a = SPHa;
+            } else {
+            	HS1a = SPHa;
+            	HS2a = SPHa + CYLa;
+            }
+        	
+        	 HSAa = HSAa / 1000;
+             HSAn = HSAn / 1000;
+
+             HS1n = HS1a / (1+(HSAn-HSAa)*HS1a);
+             HS2n = HS2a / (1+(HSAn-HSAa)*HS2a);
+             
+             if (CYLa <0) {
+             	SPHn = HS2n;
+             	CYLn = HS1n - HS2n;
+             } else {
+             	SPHn = HS1n;
+             	CYLn = HS2n-HS1n;
+             }
+             
+             An = Aa;
+             
+             SPHn = round(SPHn,Rundung);
+             CYLn = round(CYLn,Rundung);
+
+            document.getElementById('SPHn').innerHTML = SPHn;
+            document.getElementById('CYLn').innerHTML = CYLn;
+            document.getElementById('An').innerHTML = An;
+            
+
+        } catch (e) {
+        	document.getElementById('SPHn').innerHTML = 'Invalid input';
+        	document.getElementById('CYLn').innerHTML = 'Invalid input';
+        	document.getElementById('An').innerHTML = 'Invalid input';
+
+        }
+    }
+    
+  //Den Rundungswert einlesen
+    function getRoundingValue() {
+    	var radios = document.querySelector('input[name="rounding"]:checked');
+    	return radios ? parseFloat(radios.value) : 4;
+    }
+  
+    function round(value, interval) {
+        return Math.round(value * interval) / interval;
+    }    
+    
+  //Head mit Links laden
+    fetch('Links.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('Links').innerHTML = data;
+      })
+    .catch(error => console.error('Error loading Links.html:', error)); 
+    
+    </script>
+
+</html>

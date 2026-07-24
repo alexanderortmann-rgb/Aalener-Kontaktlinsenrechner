@@ -1,0 +1,2796 @@
+<!-- 
+Copyright (c) 2025 [Alexander Ortmann]
+Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
+-->
+<!DOCTYPE html>
+<html lang="de">
+<!-- copyright: Alexander Ortmann -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formstabiler Kontaktlinsenrechner</title>
+    <link rel="stylesheet" href="Style_HTML.css">
+    <style>
+    
+select {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #d9d9d9;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: #111;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #b6b6b6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+         .liste { 
+        padding-left: 20px;
+        background-color: transparent;
+        }
+.rot { color: red; } 
+.blau { color: blue; } 
+.gruen { color: green; }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 600px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left:-0px;
+}
+.tooltip2 .tooltiptext2 {
+  visibility: hidden;
+  width: 200px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left:-100px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip2:hover .tooltiptext2 {
+  visibility: visible;
+}
+
+.tooltip2 {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.klText{
+	font-size:12px;
+}
+.Literatur{
+	font-size:9px;
+}
+.hide{
+display: none;
+}
+
+table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid black;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .container {
+            overflow-x: auto;
+        }
+        
+        .list {
+    padding: 10px;
+    background-color: #e9feec; /* Hintergrundfarbe der Liste */
+    margin: 5px 0; /* Abstand um die Liste */
+}
+
+.list li {
+    margin-bottom: 5px; /* Abstand zwischen den Listenelementen */
+    padding: 5px;
+}
+
+.list strong {
+    font-weight: bold; /* Text fett darstellen */
+    color: #333; /* Textfarbe */
+}
+
+        
+/*
+ .info-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 20px;
+        }
+        .info-btn:hover {
+            background-color: #0056b3;
+        }
+*/
+
+</style>
+</head>
+<body>
+	
+	<ul id="Links"></ul>
+    
+    <br>
+    <h1>Kontaktlinsenrechner Formstabil</h1>
+    
+    <form onsubmit="return false;">
+    
+        <h2>Probandendaten</h2>
+        <p>Hornhautradien</p>
+        
+        <div class="row">
+        <div class="column">
+        <label for="Rfla">Radius flach (mm)</label>
+        <input type="number" id="Rfla" name="Rfla" step="0.05" value="8" min="0" oninput="setRstaMax()" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="Rsta">Radius steil (mm)</label>
+        <input type="number" id="Rsta" name="Rsta" step="0.05" value="8" min="0" oninput="RstaMax()" >
+        <br>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="Afla">Achse flach (°)</label>
+        <input type="number" id="Afla" name="Afla" step="1" value="0" max="181" min="-1" oninput="Afla()">
+        <br>
+        </div>
+        <div class="column">
+        <label for="Asta">Achse steil (°)</label>
+        <input type="number" id="Asta" name="Asta" step="1" value="90" max="181" min="-1" oninput="Asta()">
+        <br>
+        </div>
+        </div>
+        
+        <p>Subjektive Refraktion</p>
+        
+        <div class="row">
+        <div class="column">
+        <label for="SPHa">Sphäre (dpt)</label>
+        <input type="number" id="SPHa" name="SPHa" value="0" step="0.25" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="CYLa">Zylinder (dpt)</label>
+        <input type="number" id="CYLa" name="CYLa" value="0" step="0.25">
+        <br>
+        </div>
+        <div class="column">
+        <label for="Aa">Achse (°)</label>
+        <input type="number" id="Aa" name="Aa" value="0" min="-1" max="181" step="1" >
+        <br>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="HSAa">HSA (mm)</label>
+        <input type="number" id="HSAa" name="HSAa" value="12" min="0" step="1" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="Durchm">
+        Hornhaut &Oslash; (mm)
+        </label>
+        <input type="number" id="Durchm" name="Durchm" value="12" min="0" step="0.1" >
+        <br>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="Exa">
+        Exzentrizität 
+        <button class="info-btn" id="btHelpExa">?</button>
+        </label>
+        <input type="number" id="Exa" name="Exa" value="0" min="0" step="0.01" oninput="Exo()">
+        <br>
+        </div>
+       
+        
+        </div>
+        
+        
+        <h2>Daten der Messlinse</h2>
+        
+        <p>Material</p>
+         <div class="row">
+        <div class="column2">
+        <select id="Material" name="Material">
+        <option value="1.443">Boston ES &nbsp; (n= 1,443)</option>
+        <option value="1.471">Boston II &nbsp; (n= 1,471)</option>
+        <option value="1.469">Boston IV &nbsp; (n= 1,469)</option>
+        <option value="1.439">Boston Equalens &nbsp; (n= 1,439)</option>
+        <option value="1.423">Boston Equalens II &nbsp; (n= 1,423)</option>
+        <option value="1.429">Boston EO &nbsp; (n= 1,429)</option>
+        <option value="1.415">Boston XO &nbsp; (n= 1,415)</option>
+        <option value="1.424">Boston XO2 &nbsp; (n= 1,424)</option>
+        <option value="1.428">Quantum I Material &nbsp; (n= 1,428)</option>
+        <option value="1.414">Quantum II Material &nbsp; (n= 1,414)</option>
+        <option value="1.492">PMMA &nbsp; (n= 1,492)</option>
+        <option value="Ind">Individual</option>
+        </select>
+        
+        </div>
+         <div class="column">
+          <div id="nKlContainer" class="hide">
+          <label for="nKl">Brechzahl:</label>
+        <input type="number" id="nKl" name="nKl" value="1.444" min="" step="0.001" >
+        </div>
+         </div>
+        </div>
+        <p>Flächendesign 
+        <button class="info-btn" id="btHelpFD">?</button>
+        </p>
+    <div id="modHelpFD" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="modHelpFD">&times;</span>
+            <p><b>Folgende Messlinsen stehen zur Auswahl.</b></p>
+            <p><u>Rückflächentorisch</u></p>
+            
+            <ul class="liste">
+            	<li>
+            	Die Linse besitzt auf der Rückfläche innerhalb der optischen Zone zwei Radien.<br>
+            	Auf der Vorderfläche werden bei Bedarf sphärische Werte verarbeitet.
+            	</li>
+           	</ul>
+            
+            <p>In die Berechnungen fließen folgende Parameter ein:</p> 
+            
+            <ul class="liste">
+            	<li>
+            	- Tränenlinse <br> 
+             	- Torus der Rückfläche <br>
+             	- Sphäre <br>
+             </li>
+           	</ul>
+            
+            <p>Empfehlung:</p> 
+            
+            <ul class="liste">
+            	<li>
+            	Gesamtastigmatismus > Hornhautastigmatismus 
+            	<br><br>
+             </li>
+           	</ul>
+            
+             <p><u>Rotationssymetrisch</u></p>
+             
+             <ul class="liste">
+            	<li>
+            	Die Linse besitzt auf Vorder- und Rückfläche jeweils nur einen Radius innerhalb der optischen Zone. <br> 
+             </li>
+           	</ul>
+             
+             <p>In die Berechnungen fließen folgende Parameter ein:</p>
+             
+             <ul class="liste">
+            	<li>
+            	- Tränenlinse <br> 
+             	- Sphäre <br><br>
+             </li>
+           	</ul>
+           	
+           	<p>Empfehlung:</p> 
+            
+            <ul class="liste">
+            	<li>
+            	Nach Radienvorschlag
+            	<br><br>
+             </li>
+           	</ul>
+
+		<p><u>Bitorisch kompensiert (= bitorische Linse mit sphärischem Wirkeffekt)</u></p>
+            
+            <ul class="liste">
+            	<li>
+            	Die Linse besitzt auf der Rück- und Vorderfläche innerhalb der optischen Zone zwei Radien.<br>
+            	Auf der Vorderfläche werden bei Bedarf sphärische Werte verarbeitet.<br>
+            	Zusätzlich wird auf der Vorderfläche der durch den Rückflächentorus induzierte Astigmatismus ausgeglichen.<br>
+            	Innerhalb der Überrefraktion wirkt die Linse deshalb wie eine rotationssymetrische Kontaktlinse. 
+            	</li>
+           	</ul>
+            
+            <p>In die Berechnungen fließen folgende Parameter ein:</p> 
+            
+            <ul class="liste">
+            	<li>
+            	- Tränenlinse <br> 
+             	- Torus der Rückfläche <br>
+             	- Sphäre <br>
+             	- Induzierter Astigmatismus zwischen Kontaktlinse und Hornhaut<br>
+             </li>
+           	</ul>
+           	
+           	<p>Empfehlung:</p> 
+            
+            <ul class="liste">
+            	<li>
+            	Gesamtastigmatismus &leq; Hornhautastigmatismus 
+            	<br><br>
+             </li>
+           	</ul>
+           	<p><b>Wichtig</b></p>
+           	<ul class="liste">
+            	<li>
+            	Das Programm gibt bei der Messlinse und dem KL Vorschlag die Empfehlung BTC:<br>
+            	Die Linse ist mit dem Sph-Wert der Überrefraktion bestellbar<br>
+            	Die Empfehlung "BTC m&ouml;glich" erscheint nur bei einer Zylinderdifferenz von weniger als 0.25 dpt
+            	<br><br>
+             </li>
+           	</ul>
+           	 <p><span class="Literatur Mueller"></span></p>
+             <br><br>
+        </div>
+    </div>
+        
+        <div class="column2">
+        <select id="Design" name="Design">
+        <option value="RT">Rückflächentorisch</option>
+        <option value="SPH">Rotationssymetrisch</option>
+        <option value="BTC">Bitorisch-Kompensiert</option>
+        </select>
+        
+        <br><br>
+        Messlinsenempfehlung: <br><span id="Messlinse"></span>
+        <br><br>
+        </div>
+        <button type="button" onclick="Radienvorschlag()">Radienvorschlag</button>
+        
+        <p>Rückflächenradien</p>
+        <div class="row">
+        <div class="column">
+        <div id="RFN" >
+        <label for="Rfln" id="RFNLabel" >Radius flach (mm)</label>
+        <input type="number" id="Rfln" name="Rfln" step="0.05" value="8" min="0" oninput="setRstnMax()">
+        <br>
+        </div>
+        </div>
+        <div class="column">
+        <div id="RSN" >
+        <label for="Rstn" id="RSNLabel" >Radius steil (mm)</label>
+        <input type="number" id="Rstn" name="Rstn" step="0.05" value="8" min="0" oninput="RstnMax()">
+        <br>
+        </div>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="SphMl">
+        Sphäre (dpt) 
+        <button class="info-btn" id="btHelpSph">?</button>
+        </label>
+        <input type="number" id="SphMl" name="SphMl" step="0.25" value="0" >
+        
+         <div id="modHelpSph" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="modHelpSph">&times;</span>
+            <p>
+            Das Bewegungs- und Zentrierverhalten wird zu großen Teilen durch Basiskurve und Durchmesser der Kontaktlinse bestimmt.
+            <br>Jedoch hat auch die Querschittsform einen großen Einfluss auf den Sitz der Kontaktlinse, welcher durch den Scheitelbrechwert und die Rückflächengeometrie vorbestimmt wird.
+            </p>
+            
+            <p><u>Allgemeine Maßnahmen:</u></p>
+                            <ul class="liste">
+                                <li>
+                                - Durchmesserreduktion<br>
+            					- Reduktion der vorderoptischen Zone, evtl. mit Gesamtdurchmessererhöhung <br>
+            					- Höherer Brechungsindex<br>
+                                
+                                </li>
+                            </ul>
+                            <br>
+            
+            <p><u>Speziell bei Kontaktlinsen mit <span class="rot">negativem</span> Scheitelbrechwert:</u></p>
+            
+            <ul class="liste">
+            	<li>
+            	Oft Dezentration nach oben.
+            	</li>
+           	</ul>
+            <br>
+            <u>Mögliche Maßnahmen:</u></p>
+            <ul class="liste">
+            	<li>
+            	- Prismenballast
+            	</li>
+           	</ul>
+            <br>
+            
+            <p><u>Speziell bei Kontaktlinsen mit <span class="gruen">positivem</span> Scheitelbrechwert:</u></p>
+            
+            <ul class="liste">
+            	<li>
+            	Oft Dezentration nach unten.
+            	</li>
+           	</ul>
+            <br>
+            <u>Mögliche Maßnahmen:</u></p>
+            <ul class="liste">
+            	<li>
+            	- Minustragrand zur Lidmitnahmeerhöhung<br>
+            	&nbsp;&nbsp;(Am besten in Kombination mit Reduzierung der vorderoptischen Zone und Erhöhung des Gesamtdurchmessers.)
+            	</li>
+           	</ul>
+           	 <p><span class="Literatur Mueller"></span></p>
+            <br>
+        
+        </div>
+        
+    </div>
+        </div>
+        <div class="column">
+         <label for="ExMl">
+         Exzentrizität 
+         <button class="info-btn" id="btHelpEx">?</button>
+         </label>
+        <input type="number" id="ExMl" name="ExMl" value="0" min="0" step="0.05">
+        
+         <div id="modHelpEx" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="modHelpEx">&times;</span>
+            <p>
+            <b>Folgend einige Hinweise</b>
+            
+            <br><br>Die Exzentrizität gibt maßgeblich den peripheren Sitz der Kontaktlinse vor.
+            </p>
+            
+            <p><u>Eingabe:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Der Vorschlag für die Messlinse wird automatisch bei Eingabe berechnet <br>
+           	</li>
+           </ul>
+            
+           <p><u>Ermittlung:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Mittelwert der vier Halbmeridiane der Hornhaut <br>
+           		- Mittelwert der zwei flachen Halbmeridiane der Hornhaut
+           		</li>
+           </ul>
+           
+           <p><u>Exzentrizität Hornhaut &le; 0.3:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Sphärische Hornhaut <br>
+           		- Anpassung einer mehrkurvigen Kontaktlinse
+           		</li>
+           </ul>
+           <p><u>Exzentrizität Hornhaut &ge; 0.3 und &le; 0.5:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Asphärische Hornhaut <br>
+           		- Anpassung einer asphärischen oder sphärischen Kontaktlinse<br>
+           		- Ex der Kontaktlinse 0.1 größer auswählen
+           		</li>
+           </ul>
+           
+           <p><u>Exzentrizität Hornhaut &ge; 0.5:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Asphärische Hornhaut <br>
+           		- Anpassung einer asphärischen Kontaktlinse<br>
+           		- Ex der Kontaktlinse 0.1 größer auswählen
+           		</li>
+           </ul>
+           
+           <p><span class="Literatur Mueller"></span></p>
+        </div>
+    </div>
+        
+        </div>
+        <div class="column">
+        <div class="tooltip2">
+        <label for="DSA">DSA (°) <button class="info-btn" id="btHelpDSA">?</button></label>
+        
+        	<div class="tooltiptext2">
+        	Differenz vom Sollwert in °
+        	</div>
+        </div>
+        
+        <input type="number" id="DSA" name="DSA" value="0" step="1" >
+        </div>
+        </div>
+        
+        <div id="modHelpDSA" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="modHelpDSA">&times;</span>
+            <p>
+            <b>Folgend einige Hinweise</b>
+            
+            <br><br>Die Stabilisierung der Kontaktlinse kann hier nach der Lars- bzw. Uhrzeigerregel angepasst werden.
+            <br>Diese Änderung fließt in die Berechnung der Überrefraktion mit ein.
+            </p>
+            
+            <p><u>Eingabe von <span class="gruen">positiven</span> Werten:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Drehung ist im Uhrzeigersinn <br>
+           		- Links hoch <br>
+           		- Rechts runter
+           	</li>
+           </ul>
+            
+           <p><u>Eingabe von <span class="rot">negativen</span> Werten:</u></p>
+           <ul class="liste">
+           		<li>
+           		- Drehung ist gegen den Uhrzeigersinn <br>
+           		- Links runter <br>
+           		- Rechts hoch
+           	</li>
+           	</ul>
+           	
+           	<p>Beispiel:</p>
+           	<ul class="liste">
+           		<li>
+           		Soll-Stabilisierung: 30° <br>
+           		Ist-Stabilisierung: 29° <br>
+           		DSA : 1°
+           	</li>
+           </ul>
+            <p><span class="Literatur Mueller"></span></p>
+        </div>
+    </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="KLDurchmesser">Durchmesser (mm) <button class="info-btn" id="btHelpDurch">?</button></label>
+        <input type="number" id="KLDurchmesser" name="KLDurchmesser" value="9.6" step="0.05">
+        </div>
+        </div>
+        
+         <div id="modHelpDurch" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="modHelpDurch">&times;</span>
+            <p>
+            <b>Folgend einige Hinweise</b>
+            
+            <br><br>
+            <p>Grundsätzlich gilt so klein wie möglich, so groß wie nötig.</p>
+           <p>Maximal möglicher Durchmesser
+           <ul class="liste">
+           		<li>
+           		 &Oslash; HH<sub>vertikal</sub> - 0.5 mm <br>
+           	</li>
+           </ul>
+           </p>
+           <p>Größere Durchmesser
+           <ul class="liste">
+           		<li>
+           		 - permanente Lidbedeckung möglich<br>
+           		 - &Oslash; mind. 0.3 mm größer wie Lidspaltenhöhe <br>
+           		 - geringes Fremdkörpergefühl<br>
+           		 - Gefahr: Dezentration nach oben und Festsitz
+           	</li>
+           </ul>
+           </p>
+           <p>kleinere Durchmesser
+           <ul class="liste">
+           		<li>
+           		 - &Oslash; mind. 0.2 mm kleiner wie Lidspaltenhöhe <br>
+           		 - gute Beweglichkeit, Unterspülung und Sauerstoffversorgung <br>
+           		 - höheres Fremdkörpergefühl<br>
+           		 - Gefahr: Randreflexe, Dezentration nach unten und Festsitz
+           	</li>
+           </ul>
+           </p>
+            <p><span class="Literatur Mueller"></span></p>
+        </div>
+    </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="checkExn" class="klText">Dynamischer Scheiteltiefenerhalt:</label>
+             <div class="tooltip">
+            <input type="checkbox" id="checkExn" name="checkExn" >
+        	<div class="tooltiptext">
+        	Änderungen der Exzentrizität passen die Basiskurve automatisch an und umgekehrt. 
+        	<br>Bei einkurvigen Linsen werden Änderungen des Durchmessers eingerechnet.
+        	<br>Die Scheiteltiefe bleibt annähernd gleich.
+        	</div>
+        </div>
+        <br>
+        </div>
+        </div>
+        
+        <button type="button" onclick="ÜberrefraML()" >Überrefraktion berechnen</button>
+        <br>
+        
+        <p>Überrefraktion</p>
+        
+        <div class="row">
+        <div class="column">
+        <label for="SPHÜR">Sphäre (dpt)</label>
+        <input type="number" id="SPHÜR" name="SPHÜR" step="0.25" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="CYLÜR">Zylinder (dpt)</label>
+        <input type="number" id="CYLÜR" name="CYLÜR" step="0.25" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="AÜR">Achse (°)</label>
+        <input type="number" id="AÜR" name="AÜR" min="-1" max="180" step="1" >
+        <br>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="HSAÜ">HSA (mm)</label>
+        <input type="number" id="HSAÜ" name="HSAÜ" min="0" step="1" >
+        <br>
+        </div>
+        </div>
+        
+        <button type="button" onclick="KLVorschlag()">KL Vorschlag berechnen</button>
+        
+        <h2>Vorschlag Kontaktlinse</h2>
+        
+        <p>Anpassvorschlag: <button class="info-btn" id="btHelpAnpass">?</button>
+        <br>
+        <span id="Anpassung"></span><br>
+        <span id="ExtraTipp"></span><br>
+        <span id="ExtraTipp2"></span>
+        
+        </p>
+        
+        <div class ="tooltip">
+        <h3>Bestellwerte</h3>
+        <div class="tooltiptext">
+        	Der Zylinder der Rückfläche wurde herausgerechnet.<br>
+        	Es wird ausschließlich der Zylinderwert der Vorderfläche angegeben.
+        	
+        	</div>
+        	</div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="SPHKL">Sphäre (dpt)</label>
+        <input type="number" id="SPHKL" name="SPHKL" step="0.25" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="CYLKL">Zylinder (dpt)</label>
+        <input type="number" id="CYLKL" name="CYLKL" step="0.25" >
+        <br>
+        </div>
+        <div class="column">
+        <label for="AKL">Achse (°)</label>
+        <input type="number" id="AKL" name="AKL" min="0" max="180" step="1" >
+        <br>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="RFl">Radius Flach (mm)</label>
+        <input type="number" id="RFl" name="RFl" step="0.05" >
+        </div>
+         <div class="column">
+        <label for="RSt">Radius Steil (mm)</label>
+        <input type="number" id="RSt" name="RSt" step="0.05" >
+        </div>
+        </div>
+        
+        <div class ="tooltip">
+        <h3>Messwerte</h3>
+         <div class="tooltiptext">
+        	Der Scheitelbrechwert der beiden Hauptschnitte wird dargestellt.<br>
+        	Der Zylinderwert der Vorderfläche und der Rückfläche werden miteinander verrechnet.
+        	
+        	</div>
+        	</div>
+        
+        
+        <div class="row">
+        <div class="column">
+        <label for="HS1KL">Hauptschnitt 1 (dpt)</label>
+        <input type="number" id="HS1KL" name="HS1KL" step="0.25" >
+        </div>
+        <div class="column">
+        <label for="AFl">Achse Flach (°)</label>
+        <input type="number" id="AFl" name="AFl" step="1" >
+        </div>
+        
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <label for="HS2KL">Hauptschnitt 2 (dpt)</label>
+        <input type="number" id="HS2KL" name="HS2KL" step="0.25" >
+        </div>
+        <div class="column">
+        <label for="ASt">Achse Steil (°)</label>
+        <input type="number" id="ASt" name="ASt" min="0" max="180" step="1" >
+        </div>
+       
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <button type="button" onclick="Speichern1()">Anpassung 1 speichern</button>
+        </div>
+        <div class="column">
+        <button type="button" onclick="Speichern2()">Anpassung 2 speichern</button>
+        </div>
+        <div class="column">
+        <button type="button" onclick="Speichern3()">Anpassung 3 speichern</button>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        <button type="button" onclick="Laden1()">Anpassung 1 laden</button>
+        </div>
+        <div class="column">
+        <button type="button" onclick="Laden2()">Anpassung 2 laden</button>
+        </div>
+        <div class="column">
+        <button type="button" onclick="Laden3()">Anpassung 3 laden</button>
+        </div>
+        </div>
+        
+        <p>Bestellzylinder</p>
+        
+        <span id="Bestellzyl"></span><br>
+        <span id="BestellzylV"></span>
+        
+        <p>Überrefraktion</p>
+        
+        <span id="Überrefraktion"></span>
+        <br><br>
+        <!--  -->
+        
+        <details>
+        <summary>BTC</summary>
+        
+        <p>
+        Auf der Vorderfläche werden sphärische Werte verarbeitet und der durch den Rückflächentorus induzierte Astigmatismus ausgeglichen. 
+        Daher wirkt die Linse optisch wie eine rotationssymmetrische Kontaktlinse.
+        </p>
+        <p>Eine bitorisch kompensierte Kontaktlinse hätte folgende technische Daten:</p>
+<ul class="list">
+    <li><strong>Radius flach:</strong> <span id="radiusFlach"></span></li>
+    <li><strong>Radius steil:</strong> <span id="radiusSteil"></span></li>
+    <li><strong>Sphäre:</strong> <span id="BTCSphäre"></span></li>
+    <li><strong>Zylinderwirkung:</strong>
+        <ul class="list">
+            <li><strong>Insgesamt:</strong> <span id="ZInsgesamt"></span></li>
+            <li><strong>Rückfläche:</strong> <span id="ZRückfläche"></span></li>
+            <li><strong>Vorderfläche:</strong> <span id="ZVorderfläche"></span></li>
+        </ul>
+    </li>
+</ul>
+
+
+        
+        
+        </details>
+        
+        <details>
+        <summary>Detailansicht</summary>
+        <br>
+        <h3>Refraktion</h3>
+        
+       <div class="row">
+        <div class="column">
+        
+        </div>
+        <div class="column">
+        Hauptschnitt 1 
+        </div>
+        <div class="column">
+        Hauptschnitt 2 
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        Auge
+        </div>
+        <div class="column">
+        <span id="AugeFL"></span> 
+        </div>
+        <div class="column">
+        <span id="AugeST"></span> 
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        Tränenlinse
+        </div>
+        <div class="column">
+        <span id="TLFL"></span> 
+        </div>
+        <div class="column">
+        <span id="TLST"></span> 
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        Kontaktlinse
+        </div>
+        <div class="column">
+        <span id="KLFL"></span>
+        </div>
+        <div class="column">
+        <span id="KLST"></span>
+        </div>
+        </div>
+        
+        <div id="container">
+        <div class="rowÜ">
+        <div class="column">
+        Überrefraktion
+        </div>
+        <div class="column">
+        <span class="flachÜ" data-value="">
+        <span id="ÜRFL"></span> </span>
+        </div>
+        <div class="column">
+        <span class="steilÜ" data-value="">
+        <span id="ÜRST"></span> </span>
+        </div>
+        </div>
+        </div>
+        
+        <br>
+        
+        <h3>Astigmatismus</h3>
+        
+        <div class="row">
+        <div class="column">
+        Astigmatismus gesamt
+        </div>
+        <div class="column">
+        <span id="AstiG"></span> 
+        </div>
+        <div class="column">
+        
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        Astigmatismus außen
+        </div>
+        <div class="column">
+        <span id="AstiHH"></span> 
+        </div>
+        <div class="column">
+        
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        Astigmatismus innen
+        </div>
+        <div class="column">
+        <span id="AstiI"></span> 
+        </div>
+        <div class="column">
+        
+        </div>
+        </div>
+        
+        <br>
+        
+        <h3>Induzierter Astigmatismus der Kontaktlinse</h3>
+        
+        <div class="row">
+        <div class="column">
+        
+        </div>
+        <div class="column">
+        RT
+        </div>
+        <div class="column">
+        BTC
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        Auf der Hornhaut
+        </div>
+        <div class="column">
+        <span id="IndKLAst">&emsp;</span> 
+        </div>
+        <div class="column">
+        <span id="IndKLAstBTC">&emsp;</span> 
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="column">
+        In Luft
+        </div>
+        <div class="column">
+        <span id="IndLuftAst">&emsp;</span> 
+        </div>
+        <div class="column">
+        <span id="IndLuftAstBTC">&emsp;</span> 
+        </div>
+        </div>
+        
+        </details>
+        <br>
+        <details>
+        <summary>Rundung auswählen: </summary>
+        
+        <br>
+        <input type="radio" id="round25" name="rounding" value="4" > 
+        <label for="round25">0,25</label>
+        
+        <input type="radio" id="round12" name="rounding" value="8"> 
+        <label for="round12">0,12</label>
+        
+        <input type="radio" id="round01" name="rounding" value="100" checked> 
+        <label for="round01">0,01</label>
+        
+        </details>
+    
+    <div>
+     <div id="modHelpAnpass" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="modHelpAnpass">&times;</span>
+            <p>
+            <b>Folgend einige Hinweise zu Bestelllinsen</b>
+            
+            <br><br>
+            <div class="container">
+            <table>
+            <tr>
+                <th>Geometrie</th>
+                <th>Aufbau</th>
+                <th>Werte im SBM</th>
+                <th>Anpasshinweis Rückfläche</th>
+            </tr>
+            <tr>
+                <td>RS - rotationssymmetrisch</td>
+                <td>Rück- und Vorderfläche ist rotationssymmetrisch. <br>Keine Gravuren.</td>
+                <td>Sphärischer Wert.</td>
+                <td>Bereich: <br>&Delta;r bis 0.35 - 0.45</td>
+            </tr>
+            <tr>
+                <td>VPT - vorderprismatisch-torisch</td>
+                <td>Rückfläche ist rotationssymmetrisch. <br>Vorderfläche ist torisch. <br>Gravuren senkrecht zum Prisma.</td>
+                <td>Torische Werte. <br>2 Hauptschnitte.</td>
+                <td>Bereich: <br>&Delta;r bis 0.35 - 0.45</td>
+            </tr>
+            <tr>
+                <td>RT - rücktorisch</td>
+                <td>Rückfläche ist torisch. <br>Vorderfläche ist rotationssymmetrisch. <br>Gravuren im flachen Meridian.</td>
+                <td>Torische Werte. <br>2 Hauptschnitte.</td>
+                <td>Bereich: <br>&Delta;r ab 0.35 - 0.45</td>
+            </tr>
+            <tr>
+                <td>RPT - peripher-torische Rückfläche</td>
+                <td>Rückfläche ist peripher torisch. <br>Rückfläche ist zentral rotationssymmetrisch. <br> Optikzone ist ovalisiert.</td>
+                <td>Sphärischer Wert.</td>
+                <td>Bereich: <br>&Delta;r 0.35 - 0.40 <br> Alternative zu RS und RT <br>(Für Berechnung Radien wie bei RS einstellen)</td>
+            </tr>
+            <tr>
+                <td>BT - bitorisch</td>
+                <td>Rück- und Vorderfläche sind torisch. <br>Gravuren im flachen Meridian.</td>
+                <td>Torische Werte. <br>2 Hauptschnitte.</td>
+                <td>Bereich: <br>&Delta;r ab 0.35 - 0.45</td>
+            </tr>
+            <tr>
+                <td>BTC - bitorisch kompensiert</td>
+                <td>Rück- und Vorderfläche sind torisch. <br>Gravuren im flachen Meridian.</td>
+                <td>Torische Werte. <br>2 Hauptschnitte. <br>Auf dem Auge sph Wirkung <br>Induzierter Astigmatismus wird auf der Vorderfläche ausgeglichen</td>
+            	<td>Bereich: <br>&Delta;r ab 0.35 - 0.45 <br> optimal bei reinem Hornhautastigmatismus</td>
+            </tr>
+            <tr>
+                <td>weich - weiche Kontaktlinse</td>
+                <td>Wie Vorderprismatisch-torisch, <br>schmiegt sich jedoch ans Auge an.</td>
+                <td>Nur sehr aufwendig im Wasser zu vermessen.</td>
+                <td></td>
+            </tr>
+        </table>
+        </div>
+        <br>
+        <button class="info-btn" onclick="changeFontSize(4)">+</button>
+        <button class="info-btn" onclick="changeFontSize(-4)">-</button>
+         <p><span class="Literatur Mueller"></span></p>
+    </div>
+</div>
+    </div>
+    
+    </form>
+    </body>
+    
+    <footer>
+    <p>Alle Angaben ohne Gewähr.</p>
+  <span id="footer"></span>
+</footer>
+    <script>
+    
+    window.onload = function() {
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            // Ersetze das Eingabefeld durch ein text-input, wenn es sich um ein mobiles Gerät handelt
+            var inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(function(input) {
+                var parent = input.parentNode;
+                var newInput = document.createElement("input");
+                newInput.type = "text";
+                newInput.id = input.id;
+                newInput.name = input.name;
+                newInput.value = input.value;
+                newInput.required = input.required;
+                newInput.oninput = function() {
+                    this.value = this.value.replace(/[^-0-9.,]/g, '');
+                };
+                parent.replaceChild(newInput, input);
+            });
+        }
+    };
+        
+  //Footer mit Infos laden
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      })
+    .catch(error => console.error('Error loading footer.html:', error));
+    
+    document.getElementById('AÜR').addEventListener('input', function() {
+    	var a = parseFloat(document.getElementById('AÜR').value);
+    	if (a < 0) {
+    	    a += 180;
+    	} else if (a >= 180) {
+    	    a -= 180;
+    	}
+    	document.getElementById('AÜR').value = a;
+    });
+    
+    function ÜberrefraML(){
+    	var Rfla, Rsta, Afla, Asta;
+    	var Spha, Cyla, Aa, HSAa;
+    	var Ma, Mat, Rflml, Rstml, Sphml;
+    	var nLuft = 1;
+    	var nTL = 1.336;
+    	
+    	Rfla = parseFloat(document.getElementById('Rfla').value);
+    	Rsta = parseFloat(document.getElementById('Rsta').value);
+    	Afla = parseFloat(document.getElementById('Afla').value);
+    	Asta = parseFloat(document.getElementById('Asta').value);
+    	
+    	Spha = parseFloat(document.getElementById('SPHa').value);
+    	Cyla = parseFloat(document.getElementById('CYLa').value);
+    	Aa = parseFloat(document.getElementById('Aa').value);
+    	HSAa = parseFloat(document.getElementById('HSAa').value);
+    	
+    	Rflml = parseFloat(document.getElementById('Rfln').value);
+    	Rstml = parseFloat(document.getElementById('Rstn').value);
+    	Sphml = parseFloat(document.getElementById('SphMl').value);
+    	var DSA = parseFloat(document.getElementById('DSA').value);
+    	
+    	Ma = document.getElementById('Material').value;
+    	var selectElement = document.getElementById('Material');
+    	Mat = parseFloat(selectElement.options[selectElement.selectedIndex].value);
+    	
+    	var nKl = document.getElementById("Material").value;
+    	
+    	if (nKl==="Ind"){
+    		nKl = parseFloat(document.getElementById("nKl").value);
+    	} else {
+    		nKl = parseFloat(nKl);
+    	}
+    	
+    	var Design = document.getElementById("Design").value;
+    	
+    	if (Design === 'RT') {
+
+        }  
+    	if (Design === 'SPH') {
+		Rstml = Rflml;
+        } 
+    	if (Design === 'BTC') {
+
+        }
+    	
+    	
+    	// Hauptschnitte einlesen
+    	var HS1a, HS2a;
+    	
+    	if (Cyla<=0){
+    		HS1a = Spha;
+    		HS2a = Spha + Cyla;
+    	} else {
+    		HS1a = Spha + Cyla;
+    		HS2a = Spha;
+    	}
+    	
+    	// HSA einrechnen
+    	var HS1a0, HS2a0;
+    	var AA;
+    	HSAa = HSAa / 1000;
+    	
+    	HS1a0 = HS1a / (1 - HSAa * HS1a);
+    	HS2a0 = HS2a / (1 - HSAa * HS2a);
+    	
+    	//Zurückrechnung in Minuszylinder
+    	var SPHa = HS1a0;
+    	var CYLa = HS2a0 - HS1a0;
+    	if(Cyla<=0){
+    		 AA = Aa;
+    	}else{
+    		if(Aa<=90){
+    			AA = Aa + 90;
+    		}else{AA = Aa - 90;}
+    		
+    	}
+    	
+    	//Berechnung Power-Vektor für Augenrefraktion Minuszylinder
+        var AugePower = LinseinPower(SPHa, CYLa, AA);
+        var M_a = AugePower.M;
+        var J0_a = AugePower.J0;
+    	var J45_a = AugePower.J45;
+        
+    	// Tränenlinse 
+    	var TLF, TLS;
+    	
+    	//TLF = 1000 * (nLuft - nTL) * (1 / Rfla - 1 / Rflml);
+    	//TLS = 1000 * (nLuft - nTL) * (1 / Rsta - 1 / Rstml);
+    	
+    	TLF = 1000 * ((nTL-nLuft)/Rflml+(nLuft-nTL)/Rfla);
+    	TLS = 1000 * ((nTL-nLuft)/Rstml+(nLuft-nTL)/Rsta);
+    	
+    	// Minuszylinder Refraktion für Tränenlinse 
+    	var SphTl = TLF;
+    	var CylTl = TLS - TLF;
+    	var ATl = Afla;
+    	ATl = ATl + DSA //180*Math.PI;
+    	
+    	//Berechnung der Powervektoren für Tränenlinse
+    	var TränePower = LinseinPower(SphTl, CylTl, ATl);
+        var M_Tl = TränePower.M;
+        var J0_Tl = TränePower.J0;
+    	var J45_Tl = TränePower.J45;
+    	
+     	// Induzierter Asti bei getragener KL
+    	var IndKLAsti = 1000 * (nTL - nKl) * ((1 / Rstml) - (1 / Rflml));
+    	
+    	// Induzierter Asti in Luft
+    	var IndLuftAsti = 1000 * (nLuft - nKl) * ((1 / Rstml) - (1 / Rflml));
+        
+    	console.log('Debug IndAst:', nKl,nLuft, Rstml, Rflml, IndLuftAsti);
+    	
+        // Berechnung Minuszylinder Refraktion der Messlinse
+    	var SphKL = Sphml;
+    	var CylKL = IndLuftAsti;
+    	
+    	if (Design === 'BTC') {
+    		
+    		var CylKL = CylKL - IndKLAsti;
+        }
+    	var AKL = Afla + DSA;
+    		AKL = AKL;
+    	
+    	//Für Minuszylinder Refraktion Berechnung der Power Vektoren der KL
+    	var MesslinsePower = LinseinPower(SphKL, CylKL, AKL);
+        var M_Kl = MesslinsePower.M;
+        var J0_Kl = MesslinsePower.J0;
+    	var J45_Kl = MesslinsePower.J45;
+    	
+        
+    	// Berechnung der Überrefraktion als Power Vektor
+    	var M_Ür =  M_a - M_Tl - M_Kl;
+    	var J0_Ür = J0_a - J0_Tl - J0_Kl;
+    	var J45_Ür = J45_a -J45_Tl - J45_Kl; 
+    	
+    	// Zurück in Minuszylinder
+    	var RefraÜr = PowerinLinse(M_Ür,J0_Ür,J45_Ür);
+    	var ÜSph = RefraÜr.Sph;
+    	var ÜCyl = RefraÜr.Cyl;
+    	var AÜr = RefraÜr.A;
+    	
+        var HSAÜ = 0;
+    	
+        
+        console.log('Ergebnis der Auge:', SPHa, CYLa, AA);
+        console.log('Ergebnis der TL:', SphTl, CylTl, ATl);
+        console.log('Ergebnis der KL:', SphKL, CylKL, AKL);
+        console.log('Ergebnis der ÜR:', ÜSph, ÜCyl, AÜr);
+        
+        console.log('Ergebnis der Auge PV:', M_a, J0_a, J45_a);
+        console.log('Ergebnis der TL PV:', M_Tl, J0_Tl, J45_Tl);
+        console.log('Ergebnis der KL PV:', M_Kl, J0_Kl, J45_Kl);
+        console.log('Ergebnis der ÜR PV:', M_Ür, J0_Ür, J45_Ür, nKl, IndLuftAsti);
+        
+    	
+        // Rundungen
+        var RundWert = getRoundingValue();
+        ÜSph = round(ÜSph,RundWert);
+        ÜCyl = round(ÜCyl,RundWert);
+        
+       
+        // Einspeisen der Werte
+        
+        document.getElementById('SPHÜR').value = ÜSph;
+        document.getElementById('CYLÜR').value = ÜCyl;
+        document.getElementById('AÜR').value = AÜr;
+        document.getElementById('HSAÜ').value = HSAÜ;
+        
+    }
+    
+    //Berechnung der Bestelllinse
+    function KLVorschlag(){
+    	
+    	//Einlesen der Daten
+    	var nLuft = 1;
+    	var nTL = 1.336;
+    	var nHH = 1.376;
+    	
+    	//Kundendaten
+    	var Rfla = parseFloat(document.getElementById('Rfla').value);
+    	var Rsta = parseFloat(document.getElementById('Rsta').value);
+    	var Afla = parseFloat(document.getElementById('Afla').value);
+    	var Asta = parseFloat(document.getElementById('Asta').value);
+    	
+    	var Spha = parseFloat(document.getElementById('SPHa').value);
+    	var Cyla = parseFloat(document.getElementById('CYLa').value);
+    	var Aa = parseFloat(document.getElementById('Aa').value);
+    	var HSAa = parseFloat(document.getElementById('HSAa').value);
+    	
+    	//Messlinse
+    	var Rflml = parseFloat(document.getElementById('Rfln').value);
+    	var Rstml = parseFloat(document.getElementById('Rstn').value);
+    	var Sphml = parseFloat(document.getElementById('SphMl').value);
+    	var DSA = parseFloat(document.getElementById('DSA').value);
+    	var ExMl = parseFloat(document.getElementById('ExMl').value);
+    	
+    	//Überrefra
+    	var ÜSph = parseFloat(document.getElementById('SPHÜR').value);
+    	var ÜCyl = parseFloat(document.getElementById('CYLÜR').value);
+    	var AÜr = parseFloat(document.getElementById('AÜR').value);
+    	var HSAÜ = parseFloat(document.getElementById('HSAÜ').value);
+    	
+    	//Material und Rundung
+    	var Ma = document.getElementById('Material').value;
+    	var selectElement = document.getElementById('Material');
+    	var Mat = parseFloat(selectElement.options[selectElement.selectedIndex].value);
+    	
+		var nKl = document.getElementById("Material").value;
+    	
+    	if (nKl==="Ind"){
+    		nKl = parseFloat(document.getElementById("nKl").value);
+    	} else {
+    		nKl = parseFloat(nKl);
+    	}
+    	
+    	//var nKl = parseFloat(document.getElementById("Material").value);
+    	var Design = document.getElementById("Design").value;
+    	
+    	//Vorschlag der KL
+    	
+    	
+    	var SPHKL //= parseFloat(document.getElementById('SPHKL').value);
+    	var CYLKL //= parseFloat(document.getElementById('CYLKL').value);
+    	var AKL //= parseFloat(document.getElementById('AKL').value);
+    	var HS1KL //= parseFloat(document.getElementById('HS1KL').value);
+    	var AFl //= parseFloat(document.getElementById('AFl').value);
+    	var RFl //= parseFloat(document.getElementById('RFl').value);
+    	var HS2KL //= parseFloat(document.getElementById('HS2KL').value);
+    	var ASt //= parseFloat(document.getElementById('ASt').value);
+    	var RSt //= parseFloat(document.getElementById('RSt').value);
+    	
+    	//Für die Detailansicht
+    	//Refraktion
+    	var AugeFL //= parseFloat(document.getElementById('AugeFL').value);
+    	var AugeST //= parseFloat(document.getElementById('AugeST').value);
+    	var TLFL //= parseFloat(document.getElementById('TLFL').value);
+    	var TLST //= parseFloat(document.getElementById('TLST').value);
+    	var KLFL //= parseFloat(document.getElementById('KLFL').value);
+    	var KLST //= parseFloat(document.getElementById('KLST').value);
+    	var ÜRFL //= parseFloat(document.getElementById('ÜRFL').value);
+    	var ÜRST //= parseFloat(document.getElementById('ÜRST').value);
+    	
+    	//Astigmatismus
+    	var AstiG 
+    	var AstiHH 
+    	var AstiI 
+    	
+    	//Induzierter Ast der Kontaktlinse
+    	var IndKLAst 
+    	var IndLuftAst 
+    	
+    	var RundWert = getRoundingValue();
+    	
+    	//Berechnungen - mache hier die gleichen rein wie bei der Üref Berechnung
+    	
+    	if (Design === 'SPH') {
+		Rstml = Rflml;
+        } 
+    	
+    	//Einlesen der Überrefraktion
+		var HS1Ü, HS2Ü;
+    	
+    	if (ÜCyl<=0){
+    		HS1Ü = ÜSph;
+    		HS2Ü = ÜSph + ÜCyl;
+    	} else {
+    		HS1Ü = ÜSph + ÜCyl;
+    		HS2Ü = ÜSph;
+    	}
+    	
+    	// HSA einrechnen
+    	var HS1Ü0, HS2Ü0;
+    	var AAÜ;
+    	HSAÜ = HSAÜ / 1000;
+    	
+    	HS1Ü0 = HS1Ü / (1 - HSAÜ * HS1Ü);
+    	HS2Ü0 = HS2Ü / (1 - HSAÜ * HS2Ü);
+    	
+    	//Zurückrechnung in Minuszylinder
+    	var SPHÜ = HS1Ü0;
+    	var CYLÜ = HS2Ü0 - HS1Ü0;
+    	if(ÜCyl<=0){
+    		 AAÜ = AÜr;
+    	}else{
+    		if(AÜr<=90){
+    			AAÜ = AÜr + 90;
+    		}else{AAÜ = AÜr - 90;}
+    		
+    	}
+    	
+    	
+    	//Berechnung Power-Vektor für Überrefraktion Minuszylinder
+    	var ÜrefPower = LinseinPower(SPHÜ, CYLÜ, AAÜ);
+        var M_Ür = ÜrefPower.M;
+        var J0_Ür = ÜrefPower.J0;
+    	var J45_Ür = ÜrefPower.J45;
+    	
+    	
+    	// Hauptschnitte einlesen von Subj. Refraktion
+    	var HS1a, HS2a;
+    	
+    	if (Cyla<=0){
+    		HS1a = Spha;
+    		HS2a = Spha + Cyla;
+    	} else {
+    		HS1a = Spha + Cyla;
+    		HS2a = Spha;
+    	}
+    	
+    	// HSA einrechnen
+    	var HS1a0, HS2a0;
+    	var AA;
+    	HSAa = HSAa / 1000;
+    	
+    	HS1a0 = HS1a / (1 - HSAa * HS1a);
+    	HS2a0 = HS2a / (1 - HSAa * HS2a);
+    	
+    	//Zurückrechnung in Minuszylinder
+    	var SPHa = HS1a0;
+    	var CYLa = HS2a0 - HS1a0;
+    	if(Cyla<=0){
+    		 AA = Aa;
+    	}else{
+    		if(Aa<=90){
+    			AA = Aa + 90;
+    		}else{AA = Aa - 90;}
+    		
+    	}
+    	
+    	
+    	//Berechnung Power-Vektor für Augenrefraktion Minuszylinder
+    	var AugePower = LinseinPower(SPHa, CYLa, AA);
+        var M_a = AugePower.M;
+        var J0_a = AugePower.J0;
+    	var J45_a = AugePower.J45;
+    	
+    	
+    	// Tränenlinse 
+    	var TLF, TLS;
+    	
+    	
+    	TLF = 1000 * ((nTL-nLuft)/Rflml+(nLuft-nTL)/Rfla);
+    	TLS = 1000 * ((nTL-nLuft)/Rstml+(nLuft-nTL)/Rsta);
+    	
+    	// Minuszylinder Refraktion für Tränenlinse 
+    	var SphTl = TLF;
+    	var CylTl = TLS - TLF;
+    	var ATl = Afla;
+    	ATl = ATl + DSA;
+    	
+    	//Berechnung der Powervektoren für Tränenlinse
+    	var TränePower = LinseinPower(SphTl, CylTl, ATl);
+        var M_Tl = TränePower.M;
+        var J0_Tl = TränePower.J0;
+    	var J45_Tl = TränePower.J45;
+    	
+     	// Induzierter Asti bei getragener KL
+    	var IndKLAst = 1000 * (nTL - nKl) * ((1 / Rstml) - (1 / Rflml));
+    	
+    	// Induzierter Asti in Luft
+    	var IndLuftAst = 1000 * (nLuft - nKl) * ((1 / Rstml) - (1 / Rflml));
+        
+        // Berechnung Minuszylinder Refraktion der Messlinse
+    	var SphKL = Sphml;
+    	var CylKL;
+    	
+    	if (Design === 'BTC') {
+    		
+    		 CylKL = IndLuftAst - IndKLAst;
+        } else {CylKL = IndLuftAst;}
+    	
+    	var AKL = Afla + DSA;
+    	var AKLs = Asta + DSA;
+    	
+    	
+    	//Für Minuszylinder Refraktion Berechnung der Power Vektoren der KL
+    	var MesslinsePower = LinseinPower(SphKL, CylKL, AKL);
+        var M_Kl = MesslinsePower.M;
+        var J0_Kl = MesslinsePower.J0;
+    	var J45_Kl = MesslinsePower.J45;
+    	
+    	//Ermittlung der PowerVektoren nur für die Rückfläche Messlinse
+    	var SphMLrück = 0;
+    	var CylMLrück = IndLuftAst;
+    	
+		
+    	var MessKLRück = LinseinPower(SphMLrück, CylMLrück, AKL);
+        var M_Klr = MessKLRück.M;
+        var J0_Klr = MessKLRück.J0;
+    	var J45_Klr = MessKLRück.J45;
+    	
+    	
+    	
+     // Hornhaut Asti
+    	var SphHHAst = 0;
+    	AstiHH = 1000 * (nHH - nLuft) * (1 / Rfla - 1 / Rsta);
+    	var AstiHHLage = Afla;
+    	
+    	//Power-Vektor für HH Ast
+    	var HHAstPower = LinseinPower(SphHHAst, AstiHH, AstiHHLage);
+        var M_HHA = HHAstPower.M;
+        var J0_HHA = HHAstPower.J0;
+    	var J45_HHA = HHAstPower.J45;
+    	
+        
+        //Refraktion Innen
+        var M_HHI = M_a - M_HHA;
+        var J0_HHI = J0_a - J0_HHA;
+        var J45_HHI = J45_a - J45_HHA;
+        
+     // Zurück in Minuszylinder Refraktion innener Ast
+    	var InnererAstRef = PowerinLinse(M_HHI,J0_HHI,J45_HHI);
+    	var SphHHI = InnererAstRef.Sph;
+    	var CylHHI = InnererAstRef.Cyl;
+    	var AHHI = InnererAstRef.A;
+     
+       
+       //Berechnung der Vorschlagskontaktlinse
+       //Erstmal Power Vektoren von Überrefra und Messlinse zusammenrechnen
+       var M_KLv = M_Kl + M_Ür;
+       var J0_KLv = J0_Kl + J0_Ür;
+       var J45_KLv = J45_Kl + J45_Ür;
+       
+    	// Zurück in Minuszylinder Refraktion Vorschlagslinse
+    	var KLVRef = PowerinLinse(M_KLv,J0_KLv,J45_KLv);
+    	var SphKLV = KLVRef.Sph;
+    	var CylKLV = KLVRef.Cyl;
+    	var AKLV = KLVRef.A;
+    	var AchseLinse = AKLV;
+    	
+    	
+     // Hauptschnitte einlesen von KL Vorschlag
+    	var HS1KLV, HS2KLV;
+    	
+    	if (CylKLV<=0){
+    		HS1KLV = SphKLV;
+    		HS2KLV = SphKLV + CylKLV;
+    	} else {
+    		HS1KLV = SphKLV + CylKLV;
+    		HS2KLV = SphKLV;
+    	}
+      	
+       
+    	//Brauche den Vektor von ML und Überrefra
+    	
+    	HS1KL = HS1KLV;
+    	AFl = AKLV;
+    	
+    	RFl = Rflml;
+    	HS2KL = HS2KLV;
+    	
+    	if(AFl<=90){
+    		ASt = AFl + 90;
+	}else{ASt = AFl - 90;}
+    	
+    	RSt = Rstml;
+    	
+    	KLFL = HS1KL;
+    	
+    	//Refraktion Hauptschnitte
+    	AugeFL = HS1a0;
+    	var AugeFLage = Aa;
+    	AugeST = HS2a0;
+    	var AugeSLage; 
+    		if(Aa<=90){
+    			AugeSLage = Aa + 90;
+		}else{AugeSLage = Aa - 90;}
+    		
+    	TLFL = TLF;
+    	var TLFAchse = ATl;
+    	TLST = TLS;
+    	var TLSAchse;
+    	if(TLFAchse<=90){
+    		TLSAchse = TLFAchse + 90;
+		}else{TLSAchse = TLFAchse - 90;}
+    	
+    	
+    	//Astigmatismus
+    	AstiG = CYLa;
+    	var AsiGLage = AA;
+    	AstiI = CylHHI;
+    	
+    	//Berechnung der Überrefraktion über den KL Vorschlag
+    	//Zuerst: Berechnung der Vektoren für den auf 0,25dpt gerundeten KL Vorschlag
+    	var SphKLVrund = Math.round(SphKLV*4)/4;
+    	var CylKLVrund = Math.round(CylKLV*4)/4;
+    	
+    	var KLV_rundPower = LinseinPower(SphKLVrund, CylKLVrund, AKLV);
+        var M_KlV = KLV_rundPower.M;
+        var J0_KlV = KLV_rundPower.J0;
+    	var J45_KlV = KLV_rundPower.J45;
+    	
+    	
+    	//Berechnung des Bestellzylinders für die Vorderfläche
+    	var M_CylV =  M_KlV - M_Klr;
+    	var J0_CylV = J0_KlV - J0_Klr;
+    	var J45_CylV = J45_KlV - J45_Klr;
+    	
+    	// Zurück in Minuszylinder Refraktion Vorschlagslinse
+    	var Zylinder_vornePower = PowerinLinse(M_CylV, J0_CylV, J45_CylV);
+    	var SphCylV = Zylinder_vornePower.Sph;
+    	var CylCylV = Zylinder_vornePower.Cyl;
+    	var ACylV = Zylinder_vornePower.A;
+    	
+    	ARückfläche = AKL; 
+    	
+    	
+    	//Ab hier mach ich den Kram für die KL Vorschläge
+    	
+    	var VordererCyl = CylCylV;
+    	
+    	var Delta = Rfla - Rsta;
+    	var KLTipp;
+    	
+    	//Einspeisen 
+    	
+    	// Logik des Anpassvorschlags optimiert mit theoretischem Außenzylinder der KL
+    	
+    	var VCyl = VordererCyl;
+    	var ExtraTipp;
+    	var ExtraTipp2;
+    	
+    	if (Math.abs(VCyl) < 0.75 && Delta < 0.3) {
+            KLTipp = "RS";
+            ExtraTipp = "";
+        } else if (Math.abs(VCyl) < 0.75 && Delta >= 0.3 && Delta <= 0.4) {
+            KLTipp = "RS / RPT / RT";
+            ExtraTipp = "Je nach Stabilisierung der Linse";
+        } 
+        else if (Math.abs(VCyl) <= 0.5 && Delta > 0.4) {
+            KLTipp = "RT";
+            ExtraTipp = "";
+        }
+        else if (Math.abs(VCyl) < 0.75 && Delta > 0.4) {
+            KLTipp = "RT";
+            ExtraTipp = "evtl. n abändern?";
+        } 
+        else if (Math.abs(VCyl) >= 0.75 && Delta < 0.3) {
+            KLTipp = "VPT";
+            ExtraTipp = "";
+        } 
+        else if (Math.abs(VCyl) >= 0.75 && Delta >= 0.3 && Delta <= 0.4) {
+            KLTipp = "VPT / BT";
+            ExtraTipp = "Je nach Stabilisierung der Linse";
+        } 
+        else if (Math.abs(VCyl) >= 0.75 && Delta > 0.4) {
+            KLTipp = "BT";
+            ExtraTipp = "";
+        }
+    	
+    	//AstiHH
+    	if (Math.abs(AstiG) < 0.75 && Math.abs(AstiI) >= 0.63) {
+    	    ExtraTipp2 = "evtl. nicht doch lieber eine Weichlinse?";
+    	} else if (IndKLAst === 0) {
+    	    ExtraTipp2 = "";
+    	} else if (Math.abs(VCyl - IndKLAst) <= 0.25) {
+    	    ExtraTipp2 = "BTC möglich";
+    	} else {
+    	    ExtraTipp2 = "";
+    	}
+
+    	
+    	var Anpass = KLTipp + " " + ExtraTipp + " " + ExtraTipp2;
+    	
+    	document.getElementById('Anpassung').textContent = KLTipp;
+    	document.getElementById('ExtraTipp').textContent = ExtraTipp;
+    	document.getElementById('ExtraTipp2').textContent = ExtraTipp2;
+    	
+    	
+    	
+        
+        var IndKLAstBTC = IndKLAst - IndKLAst;
+     	var IndLuftAstBTC = IndLuftAst - IndKLAst;
+     	
+       
+     	//Induzierter Ast
+    	IndKLAst = round(IndKLAst,RundWert);
+        IndLuftAst = round(IndLuftAst,RundWert);
+        
+        IndLuftAstBTC = round(IndLuftAstBTC,RundWert);
+        VordererCyl = round(VordererCyl,RundWert);
+        
+      //Legen der Werte in den Text
+    	var BestellzylText = "Rückfläche: " + IndLuftAst + " dpt in " + ARückfläche + "°";
+    	var BestellzylVText = "Vorderfläche: " + VordererCyl + " dpt in " + ACylV + "°";
+    	
+    	
+        
+    	SphKLV = SphCylV;
+		CylKLV = CylCylV;
+		AKLV = ACylV;
+        
+		//Kl Vorschlag
+    	SphKLV = Math.round(SphKLV*4)/4;
+    	CylKLV = Math.round(CylKLV*4)/4;
+    	HS1KL = Math.round(HS1KL*4)/4;
+    	HS2KL = Math.round(HS2KL*4)/4;
+		
+    	
+// Anpassung der Bestellwerte!
+    	
+    	if (KLTipp === "RT" || KLTipp === "RS / RPT / RT" || KLTipp === "RS"){
+    		var RTCyl = "";
+        	var RTA = "";
+    		
+    		// HS1 bzw. Sph wird angepasst
+    		var VC = VordererCyl;
+    		VordererCyl = VordererCyl - VC;
+    		var BestellzylVText = "Vorderfläche: " + VordererCyl + " dpt";
+    		
+    		HS1KL = HS1KL + (VC/2);
+    		SphKLV= HS1KL;
+    		
+    		
+    		
+    		SphKLV = Math.round(SphKLV*4)/4;
+    		HS1KL = Math.round(HS1KL*4)/4;
+        	
+    		//Rückzylinder ist IndLuftAst
+        	
+        	HS2KL = HS1KL + IndLuftAst;
+        	HS2KL = Math.round(HS2KL*4)/4;
+        	
+        	//KLV überschreiben
+        	
+        	var RTKL = LinseinPower(SphKLV, IndLuftAst, AchseLinse);
+        	M_KlV = RTKL.M;
+            J0_KlV = RTKL.J0;
+        	J45_KlV = RTKL.J45;
+        	
+        	console.log('Test:', SphKLV, IndLuftAst, AchseLinse, VC);
+        	
+        	CylKLV = RTCyl;
+    		AKLV= RTA;
+    		
+    		
+    	}
+    	
+    	
+    	
+    	
+//Dann die Überrefra berechnung und wieder zurück in Minuszylinder rechnen
+    	
+    	var M_KLVÜr =  M_a - M_Tl - M_KlV;
+    	var J0_KLVÜr = J0_a - J0_Tl - J0_KlV;
+    	var J45_KLVÜr = J45_a -J45_Tl - J45_KlV;
+    	
+    	var KLV_ÜberRef = PowerinLinse(M_KLVÜr,J0_KLVÜr,J45_KLVÜr);
+    	var SphKLVÜr = KLV_ÜberRef.Sph;
+    	var CylKLVÜr = KLV_ÜberRef.Cyl;
+    	var AKLVÜr = KLV_ÜberRef.A;
+    	
+    	
+     // Hauptschnitte einlesen von KL Vorschlag
+    	var HS1KLVÜr, HS2KLVÜr;
+    	
+    	if (CylKLVÜr<=0){
+    		HS1KLVÜr = SphKLVÜr;
+    		HS2KLVÜr = SphKLVÜr + CylKLVÜr;
+    	} else {
+    		HS1KLVÜr = SphKLVÜr + CylKLVÜr;
+    		HS2KLVÜr = SphKLVÜr;
+    	}
+    	
+    	var AKLVÜrSLage; 
+		if(AKLVÜr<=90){
+			AKLVÜrSLage = AKLVÜr + 90;
+	}else{AKLVÜrSLage = AKLVÜr - 90;}
+    	
+    	ÜRFL = HS1KLVÜr;
+    	ÜRST = HS2KLVÜr;
+    	
+    	var SÜref = SphKLVÜr;
+    	var CÜref = CylKLVÜr;
+    	
+    	
+    	
+    	// Debugging Ecke
+    	var TestRef = PowerinLinse(M_Klr,J0_Klr,J45_Klr);
+    	var SphTest = TestRef.Sph;
+    	var CylTest = TestRef.Cyl;
+    	var ATest = TestRef.A;
+    	
+    	
+    	
+    	console.log('Test Brech:',nKl, SphTest, CylTest, ATest);
+    	
+    	
+    	console.log('Üref fl:', ÜRFL, AKLVÜr);
+    	console.log('Üref st:', ÜRST, AKLVÜrSLage);
+    	
+    	
+    	
+    	//Und Runden
+       
+    	
+        //var SÜref = Math.round(SphKLVÜr*100)/100;
+    	//var CÜref = Math.round(CylKLVÜr*100)/100;
+        SÜref = round(SÜref,RundWert);
+    	CÜref = round(CÜref,RundWert);
+    	
+    	
+    	
+    	
+      	//Refraktion
+      	AugeFL = round(AugeFL,RundWert);
+      	AugeST = round(AugeST,RundWert);
+      	TLFL = round(TLFL,RundWert);
+      	TLST = round(TLST,RundWert);
+      	KLFL = Math.round(HS1KL*4)/4;
+      	KLST = Math.round(HS2KL*4)/4;
+      	ÜRFL = round(ÜRFL,RundWert);
+      	ÜRST = round(ÜRST,RundWert);
+      	
+    	//Astigmatismus
+        AstiG = round(AstiG,RundWert);
+        AstiHH = round(AstiHH,RundWert);
+        AstiI = round(AstiI,RundWert);
+        
+        console.log('Teste:', SphKLV, CylKLV, AKL);
+    	
+    	
+    	var ÜberrefText = "Sph " + SÜref + " dpt Cyl " + CÜref + " dpt A " + AKLVÜr + "°";
+    	
+    	var Augeflach = AugeFL + " dpt in " + AugeFLage + "°";
+     	var Augesteil = AugeST + " dpt in " + AugeSLage + "°";
+     	var TLflach = TLFL + " dpt in " + TLFAchse + "°";
+     	var TLsteil = TLST + " dpt in " + TLSAchse + "°";
+     	var KLVflach = HS1KL + " dpt in " + AKL + "°"; //KLFL
+     	var KLVsteil = HS2KL + " dpt in " + AKLs + "°"; //KLST
+     	var KLVÜrflach = ÜRFL + " dpt in " + AKLVÜr + "°";
+     	var KLVÜrsteil = ÜRST + " dpt in " + AKLVÜrSLage + "°";
+     	
+     	var GesAst = AstiG + " dpt in " + AsiGLage + "°";
+     	var HHAst = AstiHH + " dpt in " + AstiHHLage + "°";
+     	var HHinn = AstiI + " dpt in " + AHHI + "°";
+     	
+     	var RT_IKLA = IndKLAst + " dpt in " + AKLs + "°";
+     	var RT_ILuA = IndLuftAst + " dpt in " + ARückfläche + "°";
+     	
+     	
+     	var BTC_IKLA = IndKLAstBTC + " dpt in " + AKLs + "°";
+     	var BTC_ILuA = IndLuftAstBTC + " dpt in " + ARückfläche + "°";
+         
+    	
+    	//Einspeisen der Werte
+    	//Bestellzylinder und Überrefraktion
+    	
+    	document.getElementById('Bestellzyl').textContent = BestellzylText;
+    	document.getElementById('BestellzylV').textContent = BestellzylVText;
+    	document.getElementById('Überrefraktion').textContent = ÜberrefText;
+    	
+    	
+    	//Vorschlag KL
+    	document.getElementById('SPHKL').value = SphKLV;//
+    	document.getElementById('CYLKL').value = CylKLV;//
+    	document.getElementById('AKL').value = AKLV;//
+    	document.getElementById('HS1KL').value = HS1KL;//
+    	document.getElementById('AFl').value = AFl;
+    	document.getElementById('RFl').value = RFl;
+    	document.getElementById('HS2KL').value = HS2KL;//
+    	document.getElementById('ASt').value = ASt;
+    	document.getElementById('RSt').value = RSt;
+    	
+    	//Detailkram
+    	//Refraktion
+    	
+    	
+    	
+    	document.getElementById('AugeFL').textContent = Augeflach;
+    	document.getElementById('AugeST').textContent = Augesteil;
+    	document.getElementById('TLFL').textContent = TLflach;
+    	document.getElementById('TLST').textContent = TLsteil;
+    	document.getElementById('KLFL').textContent = KLVflach;
+    	document.getElementById('KLST').textContent = KLVsteil;
+    	document.getElementById('ÜRFL').textContent = KLVÜrflach;
+    	document.getElementById('ÜRST').textContent = KLVÜrsteil;
+    	
+    	//Astigmatismus
+    	
+    	document.getElementById('AstiG').textContent = GesAst;
+    	document.getElementById('AstiHH').textContent = HHAst;
+    	document.getElementById('AstiI').textContent = HHinn;
+    	
+    	//Induzierter Ast
+    	
+    	document.getElementById('IndKLAst').textContent = RT_IKLA;
+    	document.getElementById('IndLuftAst').textContent = RT_ILuA;
+    	
+    	//Für die BTC Linse extra
+    	
+    	
+    	document.getElementById('IndKLAstBTC').textContent = BTC_IKLA;
+    	document.getElementById('IndLuftAstBTC').textContent = BTC_ILuA;
+    	
+    	var BTCSphäre = HS1KL + " dpt";
+    	var radiusFlach = RFl + " mm";
+    	var radiusSteil = RSt + " mm";
+    	document.getElementById('BTCSphäre').textContent = BTCSphäre;
+    	document.getElementById('radiusFlach').textContent = radiusFlach;
+    	document.getElementById('radiusSteil').textContent = radiusSteil;
+    	document.getElementById('ZVorderfläche').textContent = RT_IKLA;
+    	document.getElementById('ZRückfläche').textContent = RT_ILuA;
+    	document.getElementById('ZInsgesamt').textContent = BTC_ILuA;
+    	
+    	
+    	
+    }
+    
+    
+    
+    function setRstnMax(){
+    	var rfl = document.getElementById('Rfln').value; 
+    	var rst = document.getElementById('Rstn').value;
+    	if (rfl<rst){rst=rfl}else{}
+    	document.getElementById('Rstn').value = rst;
+    	document.getElementById('Rstn').max = rfl;
+    }
+    
+    function RstnMax(){
+    	const max = document.getElementById('Rfln').value; 
+    	document.getElementById('Rstn').max = max;
+    }
+    
+    function setRstaMax(){
+    	var rfl = document.getElementById('Rfla').value; 
+    	var rst = document.getElementById('Rsta').value;
+    	if (rfl<rst){rst=rfl}else{}
+    	document.getElementById('Rsta').value = rst;
+    	document.getElementById('Rsta').max = rfl;
+    }
+    
+    function RstaMax(){
+    	const max = document.getElementById('Rfla').value; 
+    	document.getElementById('Rsta').max = max;
+    }
+    
+    function Afla(){
+    	document.getElementById('Asta').removeEventListener('input', Asta);
+    	
+    	var Afl = parseFloat(document.getElementById('Afla').value);
+    	var Ast = parseFloat(document.getElementById('Asta').value);
+    	
+    	if (Afl < 0) {
+    	    Afl += 180;
+    	} else if (Afl > 180) {
+    	    Afl -= 180;
+    	}
+    	
+    	if(Afl<=90){
+    		Ast = Afl + 90;
+    	}else{Ast=Afl-90;}
+    	
+    	document.getElementById('Asta').value = Ast;
+    	document.getElementById('Afla').value = Afl;
+    	document.getElementById('Asta').addEventListener('input', Asta);
+    }
+ 
+    
+    function Asta(){
+    	document.getElementById('Afla').removeEventListener('input', Afla);
+    	
+    	var Afl = parseFloat(document.getElementById('Afla').value);
+    	var Ast = parseFloat(document.getElementById('Asta').value);
+    	
+    	if (Ast < 0) {
+    	    Ast += 180;
+    	} else if (Ast > 180) {
+    	    Ast -= 180;
+    	}
+    	
+    	if(Ast<=90){
+    		Afl = Ast + 90;
+    	}else{Afl=Ast-90;}
+    	
+    	document.getElementById('Afla').value = Afl;
+    	document.getElementById('Asta').value = Ast;
+    	document.getElementById('Afla').addEventListener('input', Afla);
+    }
+ // Event-Listener für das Eingabefeld Asta
+    document.getElementById('Asta').addEventListener('input', Asta);
+ 
+ // Event-Listener für das Eingabefeld Afla
+    document.getElementById('Afla').addEventListener('input', Afla);
+    
+    var ExnAlt = parseFloat(document.getElementById('ExMl').value);
+	var RFlnAlt = parseFloat(document.getElementById('Rfln').value);
+	var KLDurchAlt = parseFloat(document.getElementById('KLDurchmesser').value);
+ 
+ // Kram für die Exzentrizität
+ function Exo() {
+            var Exa = parseFloat(document.getElementById('Exa').value);
+            var Exn;
+            if (Exa <= 0.3) {
+                Exn = 0;
+            } else {
+                Exn = Exa + 0.1;
+                Exn = Math.round(Exn * 20) / 20;
+            }
+            document.getElementById('ExMl').value = Exn;
+            ExnAlt = Exn;
+        }
+ document.getElementById('Exa').addEventListener('input', Exo);
+ 
+ //Anpassung der Radien bei Exzentrizitätsveränderung mit der Checkbox
+ 
+	 document.getElementById('ExMl').addEventListener('input', function() {
+            if (document.getElementById('checkExn').checked) {
+                var Exn = parseFloat(this.value);
+                var Delta = Exn - ExnAlt;
+                var Rfl = document.getElementById('Rfln');
+                Rfl.value = parseFloat(Rfl.value) - Delta;
+                Rfl.value = Math.round(Rfl.value * 20) / 20;
+                ExnAlt = Exn;
+            }
+        });
+ 
+	 document.getElementById('KLDurchmesser').addEventListener('input', function() {
+         if (document.getElementById('checkExn').checked) {
+             var KLDn = parseFloat(this.value);
+             var Delta = KLDn - KLDurchAlt;
+             var Exn = parseFloat(document.getElementById('ExMl').value);
+             
+             
+             var Rfl = document.getElementById('Rfln');
+             if(Exn==0){
+            	
+            	 if (Math.abs(Delta) >=0.25){
+             Rfl.value = parseFloat(Rfl.value) + Math.round((Delta/5)*20)/20;
+             Rfl.value = Math.round(Rfl.value * 20) / 20;
+             KLDurchAlt = KLDn;
+             }
+            	 
+             
+             }
+         }
+     });
+	 
+	 document.getElementById('Rfln').addEventListener('input', function() {
+         if (document.getElementById('checkExn').checked) {
+             var Rfl = parseFloat(this.value);
+             var Delta = Rfl - RFlnAlt;
+             var Exn = document.getElementById('ExMl');
+             Exn.value = parseFloat(Exn.value) - Delta;
+             Exn.value = Math.round(Exn.value * 20) / 20;
+             RFlnAlt = Rfl;
+         }
+     });
+	 
+ 
+ 
+ // Für den Radienvorschlag
+    function Radienvorschlag() {
+            var RFla = parseFloat(document.getElementById('Rfla').value);
+            var RSta = parseFloat(document.getElementById('Rsta').value);
+
+            var Dif = RFla - RSta;
+            Dif = Math.round(Dif * 20) / 20;
+            var RFln, RStn;
+            RFln = RFla;
+            RFln = Math.round(RFln * 20) / 20;
+
+            console.log('Ergebnis:', Dif);
+            
+            if (Dif >= 0.35) {
+                RStn = RFla - (Dif * 0.8);
+                RStn = Math.round(RStn * 20) / 20;
+            } else if (Dif > 0.25) {
+                RStn = RFln - 0.05;
+                RFln = RFln - 0.05;
+                RStn = Math.round(RStn * 20) / 20;
+                RFln = Math.round(RFln * 20) / 20;
+            } else {
+                RStn = RFln;
+            }
+            RFlnAlt = RFln;
+
+            document.getElementById('Rfln').value = RFln;
+            document.getElementById('Rstn').value = RStn;
+        
+ 			//Hier kommt die Messlinsenempfehlung rein
+ 			//Erstmal alles für die Berechnungen einspeisen
+            var Afla = parseFloat(document.getElementById('Afla').value);
+        	var Asta = parseFloat(document.getElementById('Asta').value);
+        	
+        	var Spha = parseFloat(document.getElementById('SPHa').value);
+        	var Cyla = parseFloat(document.getElementById('CYLa').value);
+        	var Aa = parseFloat(document.getElementById('Aa').value);
+        	var HSAa = parseFloat(document.getElementById('HSAa').value);
+        	
+        	var Exa = parseFloat(document.getElementById('Exa').value);
+        	
+        	var nLuft = 1;
+        	var nTL = 1.336;
+        	var nHH = 1.376;
+        	
+        	// Hauptschnitte einlesen von Subj. Refraktion
+        	var HS1a, HS2a;
+        	
+        	if (Cyla<=0){HS1a = Spha;HS2a = Spha + Cyla;} 
+        	else {HS1a = Spha + Cyla;HS2a = Spha;}
+        	
+        	// HSA einrechnen
+        	var HS1a0, HS2a0, AA;
+        	HSAa = HSAa / 1000;
+        	HS1a0 = HS1a / (1 - HSAa * HS1a);
+        	HS2a0 = HS2a / (1 - HSAa * HS2a);
+        	
+        	//Zurückrechnung in Minuszylinder
+        	var SPHa = HS1a0;
+        	var CYLa = HS2a0 - HS1a0;
+        	if(Cyla<=0){ AA = Aa;}else{if(Aa<=90){AA = Aa + 90;}else{AA = Aa - 90;}}
+        	
+        	
+        	//HH Ast
+        	var SphHHAst = 0;
+        	AstiHH = 1000 * (nHH - nLuft) * (1 / RFla - 1 / RSta);
+        	var AstiHHLage = Afla;
+        	
+        	
+        	
+        	var Messlinse
+        	var Flächendesign
+        	var Peripherie
+        	if (RFln==RStn){Flächendesign = "rotationssymetrisch";}
+        	else {
+        		
+            	if (CYLa>=AstiHH){Flächendesign = "bitorisch kompensiert";}
+            	else //(CYLa<AstiHH)
+            	{Flächendesign = "rückflächentorisch";}
+        	}
+        	
+        	if (Exa <= 0.3){Peripherie = "mehrkurvig"}
+        	else {Peripherie = "asphärisch"}
+        	
+        	Messlinse = Flächendesign + " " + Peripherie;
+        	document.getElementById('Messlinse').textContent = Messlinse;
+        	
+        	console.log('Ergebnis:',CYLa, AstiHH);
+ }
+ 
+ //Das Flächendesign macht jetzt auch was
+ document.getElementById('Design').addEventListener('change', function() {
+            var selectedValue = this.value;
+            var Rfln = document.getElementById('RFN');
+            var Rstn = document.getElementById('RSN');
+            
+            // Alle Felder verstecken
+            Rfln.classList.add('hide');
+            Rstn.classList.add('hide');
+
+            if (selectedValue === 'RT') {
+                // Zeige beide Felder an
+                Rfln.classList.remove('hide');
+                Rstn.classList.remove('hide');
+                RFNLabel.textContent = "Radius flach (mm)";
+                RSNLabel.textContent = "Radius steil (mm)";
+                
+            } else if (selectedValue === 'SPH') {
+                // Zeige nur Feld 1 an
+                Rfln.classList.remove('hide');
+                RFNLabel.textContent = "Radius (mm)";
+            } else if (selectedValue === 'BTC') {
+                // Zeige beide Felder an
+                Rfln.classList.remove('hide');
+                Rstn.classList.remove('hide');
+                RFNLabel.textContent = "Radius flach (mm)";
+                RSNLabel.textContent = "Radius steil (mm)";
+            }
+        });
+ 
+    
+ // Funktion zum Öffnen
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    // Funktion zum Schließen
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    // Event-Listener für die ?-Button zum Öffnen
+    document.getElementById('btHelpFD').onclick = function() {
+        openModal('modHelpFD');
+    };
+    document.getElementById('btHelpSph').onclick = function() {
+        openModal('modHelpSph');
+    };
+    document.getElementById('btHelpEx').onclick = function() {
+        openModal('modHelpEx');
+    };
+    document.getElementById('btHelpExa').onclick = function() {
+        openModal('modHelpEx');
+    };
+    document.getElementById('btHelpDSA').onclick = function() {
+        openModal('modHelpDSA');
+    }; 
+    document.getElementById('btHelpAnpass').onclick = function() {
+        openModal('modHelpAnpass');
+    };
+
+    document.getElementById('btHelpDurch').onclick = function() {
+        openModal('modHelpDurch');
+    };
+    
+    // Event-Listener für die X in den Modals
+    var closeButtons = document.getElementsByClassName('close');
+    for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].onclick = function() {
+            var modalId = this.getAttribute('data-modal');
+            closeModal(modalId);
+        };
+    }
+
+    // Schließen beim Klicken außerhalb des Fensters
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            closeModal(event.target.id);
+        }
+    }
+    
+    //Den Rundungswert einlesen
+   function getRoundingValue() {
+    	var radios = document.querySelector('input[name="rounding"]:checked');
+    	return radios ? parseFloat(radios.value) : 4;
+    }
+
+    function round(value, interval) {
+        return Math.round(value * interval) / interval;
+    }
+    
+    
+    
+    //Das sollte das hin und herrechnen mit Powervektoren deutlich leichter machen
+    
+    function PowerinLinse(M, J0, J45) {
+        var Sph = M + Math.sqrt(J0 * J0 + J45 * J45);
+        var Cyl = -2 * Math.sqrt(J0 * J0 + J45 * J45);
+        var A = 0.5 * Math.atan(J45 / J0);
+        
+        A = A * (180 / Math.PI);
+
+        if (A + (J0 < 0 ? 0 : 90) < 0) {
+            A = A + (J0 < 0 ? 0 : 90) + 180;
+        } else {
+            A = A + (J0 < 0 ? 0 : 90);
+        }
+
+        if (A <= 90) {
+            A = A + 90;
+        } else {
+            A = A - 90;
+        }
+
+        A = Math.round(A);
+        if (J45==0 && J0==0){A=0;}
+
+        return {
+            Sph: Sph,
+            Cyl: Cyl,
+            A: A
+        };
+    }
+
+    function LinseinPower(Sph, Cyl, A) {
+    	A = A/180*Math.PI;
+        var M = Sph + Cyl / 2;
+        var J0 = -1 * Cyl / 2 * Math.cos(2 * A);
+        var J45 = -1 * Cyl / 2 * Math.sin(2 * A);
+
+        if(Cyl==0){J0=0;J45=0;}
+        return {
+            M: M,
+            J0: J0,
+            J45: J45
+        };
+    }
+    
+    function changeFontSize(delta) {
+        var cells = document.getElementsByTagName('td');
+        for (var i = 0; i < cells.length; i++) {
+            var currentSize = parseInt(window.getComputedStyle(cells[i], null).getPropertyValue('font-size')) || 10;
+            var newSize = currentSize + delta;
+            cells[i].style.fontSize = newSize + 'px';
+        }
+    }
+    
+    document.getElementById('Aa').addEventListener('input', function() {
+    	var a = parseFloat(document.getElementById('Aa').value);
+    	if (a < 0) {
+    	    a += 180;
+    	} else if (a >= 180) {
+    	    a -= 180;
+    	}
+    	document.getElementById('Aa').value = a;
+    });
+
+  //Head mit Links laden
+    fetch('Links.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('Links').innerHTML = data;
+      })
+    .catch(error => console.error('Error loading Links.html:', error));
+  
+    
+    var Mueller = "Quelle: Müller-Treiber, A. (2017) Kontaktlinsen Know-how. 4. Aufl. Heidelberg: DOZ. ISBN 978-3-942873-17-8";
+   // document.getElementById('Müller').textContent = Mueller;
+   document.querySelectorAll('.Mueller').forEach(element => {
+    element.textContent = Mueller;
+});
+    
+ //Das Individualfeld wird angezeigt
+   document.getElementById('Material').addEventListener('change', function() {
+              var selectedValue = this.value;
+              var nKl = document.getElementById('nKlContainer');
+              
+              // Feld verstecken
+              nKl.classList.add('hide');
+
+              if (selectedValue === 'Ind') {
+                  // Zeige Feld an
+                  nKl.classList.remove('hide');
+                  
+              }
+          });
+   
+  // Speichern und Laden der Daten
+    function Speichern1() {
+    localStorage.setItem("Rfla1", document.getElementById("Rfla").value);
+    localStorage.setItem("Rsta1", document.getElementById("Rsta").value);
+    localStorage.setItem("Afla1", document.getElementById("Afla").value);
+    localStorage.setItem("Asta1", document.getElementById("Asta").value);
+    localStorage.setItem("SPHa1", document.getElementById("SPHa").value);
+    localStorage.setItem("CYLa1", document.getElementById("CYLa").value);
+    localStorage.setItem("Aa1", document.getElementById("Aa").value);
+    localStorage.setItem("HSAa1", document.getElementById("HSAa").value);
+    localStorage.setItem("Durchm1", document.getElementById("Durchm").value);
+    localStorage.setItem("Exa1", document.getElementById("Exa").value);
+    localStorage.setItem("Material1", document.getElementById("Material").value);
+    localStorage.setItem("Design1", document.getElementById("Design").value);
+    localStorage.setItem("Rfln1", document.getElementById("Rfln").value);
+    localStorage.setItem("Rstn1", document.getElementById("Rstn").value);
+    localStorage.setItem("SphMl1", document.getElementById("SphMl").value);
+    localStorage.setItem("ExMl1", document.getElementById("ExMl").value);
+    localStorage.setItem("DSA1", document.getElementById("DSA").value);
+    localStorage.setItem("KLDurchmesser1", document.getElementById("KLDurchmesser").value);
+    localStorage.setItem("SPHÜR1", document.getElementById("SPHÜR").value);
+    localStorage.setItem("CYLÜR1", document.getElementById("CYLÜR").value);
+    localStorage.setItem("AÜR1", document.getElementById("AÜR").value);
+    localStorage.setItem("HSAÜ1", document.getElementById("HSAÜ").value);
+    localStorage.setItem("SPHKL1", document.getElementById("SPHKL").value);
+    localStorage.setItem("CYLKL1", document.getElementById("CYLKL").value);
+    localStorage.setItem("AKL1", document.getElementById("AKL").value);
+    localStorage.setItem("HS1KL1", document.getElementById("HS1KL").value);
+    localStorage.setItem("AFl1", document.getElementById("AFl").value);
+    localStorage.setItem("RFl1", document.getElementById("RFl").value);
+    localStorage.setItem("HS2KL1", document.getElementById("HS2KL").value);
+    localStorage.setItem("ASt1", document.getElementById("ASt").value);
+    localStorage.setItem("RSt1", document.getElementById("RSt").value);
+    localStorage.setItem("Bestellzyl1", document.getElementById("Bestellzyl").innerText);
+    localStorage.setItem("BestellzylV1", document.getElementById("BestellzylV").innerText);
+    localStorage.setItem("Überrefraktion1", document.getElementById("Überrefraktion").innerText);
+    localStorage.setItem("AugeFL1", document.getElementById("AugeFL").innerText);
+    localStorage.setItem("AugeST1", document.getElementById("AugeST").innerText);
+    localStorage.setItem("TLFL1", document.getElementById("TLFL").innerText);
+    localStorage.setItem("TLST1", document.getElementById("TLST").innerText);
+    localStorage.setItem("KLFL1", document.getElementById("KLFL").innerText);
+    localStorage.setItem("KLST1", document.getElementById("KLST").innerText);
+    localStorage.setItem("ÜRFL1", document.getElementById("ÜRFL").innerText);
+    localStorage.setItem("ÜRST1", document.getElementById("ÜRST").innerText);
+    localStorage.setItem("AstiG1", document.getElementById("AstiG").innerText);
+    localStorage.setItem("AstiHH1", document.getElementById("AstiHH").innerText);
+    localStorage.setItem("AstiI1", document.getElementById("AstiI").innerText);
+    localStorage.setItem("IndKLAst1", document.getElementById("IndKLAst").innerText);
+    localStorage.setItem("IndKLAstBTC1", document.getElementById("IndKLAstBTC").innerText);
+    localStorage.setItem("IndLuftAst1", document.getElementById("IndLuftAst").innerText);
+    localStorage.setItem("IndLuftAstBTC1", document.getElementById("IndLuftAstBTC").innerText);
+    localStorage.setItem("Messlinse1", document.getElementById("Messlinse").innerText);
+    localStorage.setItem("Anpassung1", document.getElementById("Anpassung").innerText);
+    localStorage.setItem("ExtraTipp1", document.getElementById('ExtraTipp').innerText);
+    localStorage.setItem("ExtraTipp21", document.getElementById('ExtraTipp2').innerText);
+    localStorage.setItem("BTCSphäre1", document.getElementById('BTCSphäre').innerText);
+    localStorage.setItem("radiusFlach1", document.getElementById('radiusFlach').innerText);
+    localStorage.setItem("radiusSteil1", document.getElementById('radiusSteil').innerText);
+    localStorage.setItem("ZVorderfläche1", document.getElementById('ZVorderfläche').innerText);
+    localStorage.setItem("ZRückfläche1", document.getElementById('ZRückfläche').innerText);
+    localStorage.setItem("ZInsgesamt1", document.getElementById('ZInsgesamt').innerText);
+    
+    alert("Werte für Anpassung 1 gespeichert!");
+}
+
+
+    function Laden1() {
+        document.getElementById("Rfla").value = localStorage.getItem("Rfla1");
+        document.getElementById("Rsta").value = localStorage.getItem("Rsta1");
+        document.getElementById("Afla").value = localStorage.getItem("Afla1");
+        document.getElementById("Asta").value = localStorage.getItem("Asta1");
+        document.getElementById("SPHa").value = localStorage.getItem("SPHa1");
+        document.getElementById("CYLa").value = localStorage.getItem("CYLa1");
+        document.getElementById("Aa").value = localStorage.getItem("Aa1");
+        document.getElementById("HSAa").value = localStorage.getItem("HSAa1");
+        document.getElementById("Durchm").value = localStorage.getItem("Durchm1");
+        document.getElementById("Exa").value = localStorage.getItem("Exa1");
+        document.getElementById("Material").value = localStorage.getItem("Material1");
+        document.getElementById("Design").value = localStorage.getItem("Design1");
+        document.getElementById("Rfln").value = localStorage.getItem("Rfln1");
+        document.getElementById("Rstn").value = localStorage.getItem("Rstn1");
+        document.getElementById("SphMl").value = localStorage.getItem("SphMl1");
+        document.getElementById("ExMl").value = localStorage.getItem("ExMl1");
+        document.getElementById("DSA").value = localStorage.getItem("DSA1");
+        document.getElementById("KLDurchmesser").value = localStorage.getItem("KLDurchmesser1");
+        document.getElementById("SPHÜR").value = localStorage.getItem("SPHÜR1");
+        document.getElementById("CYLÜR").value = localStorage.getItem("CYLÜR1");
+        document.getElementById("AÜR").value = localStorage.getItem("AÜR1");
+        document.getElementById("HSAÜ").value = localStorage.getItem("HSAÜ1");
+        document.getElementById("SPHKL").value = localStorage.getItem("SPHKL1");
+        document.getElementById("CYLKL").value = localStorage.getItem("CYLKL1");
+        document.getElementById("AKL").value = localStorage.getItem("AKL1");
+        document.getElementById("HS1KL").value = localStorage.getItem("HS1KL1");
+        document.getElementById("AFl").value = localStorage.getItem("AFl1");
+        document.getElementById("RFl").value = localStorage.getItem("RFl1");
+        document.getElementById("HS2KL").value = localStorage.getItem("HS2KL1");
+        document.getElementById("ASt").value = localStorage.getItem("ASt1");
+        document.getElementById("RSt").value = localStorage.getItem("RSt1");
+        document.getElementById("Bestellzyl").innerText = localStorage.getItem("Bestellzyl1");
+        document.getElementById("BestellzylV").innerText = localStorage.getItem("BestellzylV1");
+        document.getElementById("Überrefraktion").innerText = localStorage.getItem("Überrefraktion1");
+        document.getElementById("AugeFL").innerText = localStorage.getItem("AugeFL1");
+        document.getElementById("AugeST").innerText = localStorage.getItem("AugeST1");
+        document.getElementById("TLFL").innerText = localStorage.getItem("TLFL1");
+        document.getElementById("TLST").innerText = localStorage.getItem("TLST1");
+        document.getElementById("KLFL").innerText = localStorage.getItem("KLFL1");
+        document.getElementById("KLST").innerText = localStorage.getItem("KLST1");
+        document.getElementById("ÜRFL").innerText = localStorage.getItem("ÜRFL1");
+        document.getElementById("ÜRST").innerText = localStorage.getItem("ÜRST1");
+        document.getElementById("AstiG").innerText = localStorage.getItem("AstiG1");
+        document.getElementById("AstiHH").innerText = localStorage.getItem("AstiHH1");
+        document.getElementById("AstiI").innerText = localStorage.getItem("AstiI1");
+        document.getElementById("IndKLAst").innerText = localStorage.getItem("IndKLAst1");
+        document.getElementById("IndKLAstBTC").innerText = localStorage.getItem("IndKLAstBTC1");
+        document.getElementById("IndLuftAst").innerText = localStorage.getItem("IndLuftAst1");
+        document.getElementById("IndLuftAstBTC").innerText = localStorage.getItem("IndLuftAstBTC1");
+        document.getElementById("Messlinse").innerText = localStorage.getItem("Messlinse1");
+        document.getElementById("Anpassung").innerText = localStorage.getItem("Anpassung1");
+        document.getElementById("ExtraTipp").innerText = localStorage.getItem("ExtraTipp1");
+        document.getElementById("ExtraTipp2").innerText = localStorage.getItem("ExtraTipp21");
+        document.getElementById("BTCSphäre").innerText = localStorage.getItem("BTCSphäre1");
+        document.getElementById("radiusFlach").innerText = localStorage.getItem("radiusFlach1");
+        document.getElementById("radiusSteil").innerText = localStorage.getItem("radiusSteil1");
+        document.getElementById("ZVorderfläche").innerText = localStorage.getItem("ZVorderfläche1");
+        document.getElementById("ZRückfläche").innerText = localStorage.getItem("ZRückfläche1");
+        document.getElementById("ZInsgesamt").innerText = localStorage.getItem("ZInsgesamt1");
+        alert("Werte für Anpassung 1 geladen!");
+    }
+
+    function Speichern2() {
+        localStorage.setItem("Rfla2", document.getElementById("Rfla").value);
+        localStorage.setItem("Rsta2", document.getElementById("Rsta").value);
+        localStorage.setItem("Afla2", document.getElementById("Afla").value);
+        localStorage.setItem("Asta2", document.getElementById("Asta").value);
+        localStorage.setItem("SPHa2", document.getElementById("SPHa").value);
+        localStorage.setItem("CYLa2", document.getElementById("CYLa").value);
+        localStorage.setItem("Aa2", document.getElementById("Aa").value);
+        localStorage.setItem("HSAa2", document.getElementById("HSAa").value);
+        localStorage.setItem("Durchm2", document.getElementById("Durchm").value);
+        localStorage.setItem("Exa2", document.getElementById("Exa").value);
+        localStorage.setItem("Material2", document.getElementById("Material").value);
+        localStorage.setItem("Design2", document.getElementById("Design").value);
+        localStorage.setItem("Rfln2", document.getElementById("Rfln").value);
+        localStorage.setItem("Rstn2", document.getElementById("Rstn").value);
+        localStorage.setItem("SphMl2", document.getElementById("SphMl").value);
+        localStorage.setItem("ExMl2", document.getElementById("ExMl").value);
+        localStorage.setItem("DSA2", document.getElementById("DSA").value);
+        localStorage.setItem("KLDurchmesser2", document.getElementById("KLDurchmesser").value);
+        localStorage.setItem("SPHÜR2", document.getElementById("SPHÜR").value);
+        localStorage.setItem("CYLÜR2", document.getElementById("CYLÜR").value);
+        localStorage.setItem("AÜR2", document.getElementById("AÜR").value);
+        localStorage.setItem("HSAÜ2", document.getElementById("HSAÜ").value);
+        localStorage.setItem("SPHKL2", document.getElementById("SPHKL").value);
+        localStorage.setItem("CYLKL2", document.getElementById("CYLKL").value);
+        localStorage.setItem("AKL2", document.getElementById("AKL").value);
+        localStorage.setItem("HS1KL2", document.getElementById("HS1KL").value);
+        localStorage.setItem("AFl2", document.getElementById("AFl").value);
+        localStorage.setItem("RFl2", document.getElementById("RFl").value);
+        localStorage.setItem("HS2KL2", document.getElementById("HS2KL").value);
+        localStorage.setItem("ASt2", document.getElementById("ASt").value);
+        localStorage.setItem("RSt2", document.getElementById("RSt").value);
+        localStorage.setItem("Bestellzyl2", document.getElementById("Bestellzyl").innerText);
+        localStorage.setItem("BestellzylV2", document.getElementById("BestellzylV").innerText);
+        localStorage.setItem("Überrefraktion2", document.getElementById("Überrefraktion").innerText);
+        localStorage.setItem("AugeFL2", document.getElementById("AugeFL").innerText);
+        localStorage.setItem("AugeST2", document.getElementById("AugeST").innerText);
+        localStorage.setItem("TLFL2", document.getElementById("TLFL").innerText);
+        localStorage.setItem("TLST2", document.getElementById("TLST").innerText);
+        localStorage.setItem("KLFL2", document.getElementById("KLFL").innerText);
+        localStorage.setItem("KLST2", document.getElementById("KLST").innerText);
+        localStorage.setItem("ÜRFL2", document.getElementById("ÜRFL").innerText);
+        localStorage.setItem("ÜRST2", document.getElementById("ÜRST").innerText);
+        localStorage.setItem("AstiG2", document.getElementById("AstiG").innerText);
+        localStorage.setItem("AstiHH2", document.getElementById("AstiHH").innerText);
+        localStorage.setItem("AstiI2", document.getElementById("AstiI").innerText);
+        localStorage.setItem("IndKLAst2", document.getElementById("IndKLAst").innerText);
+        localStorage.setItem("IndKLAstBTC2", document.getElementById("IndKLAstBTC").innerText);
+        localStorage.setItem("IndLuftAst2", document.getElementById("IndLuftAst").innerText);
+        localStorage.setItem("IndLuftAstBTC2", document.getElementById("IndLuftAstBTC").innerText);
+        localStorage.setItem("Messlinse2", document.getElementById("Messlinse").innerText);
+        localStorage.setItem("Anpassung2", document.getElementById("Anpassung").innerText);
+        localStorage.setItem("ExtraTipp2", document.getElementById('ExtraTipp').innerText);
+        localStorage.setItem("ExtraTipp22", document.getElementById('ExtraTipp2').innerText);
+        localStorage.setItem("BTCSphäre2", document.getElementById('BTCSphäre').innerText);
+        localStorage.setItem("radiusFlach2", document.getElementById('radiusFlach').innerText);
+        localStorage.setItem("radiusSteil2", document.getElementById('radiusSteil').innerText);
+        localStorage.setItem("ZVorderfläche2", document.getElementById('ZVorderfläche').innerText);
+        localStorage.setItem("ZRückfläche2", document.getElementById('ZRückfläche').innerText);
+        localStorage.setItem("ZInsgesamt2", document.getElementById('ZInsgesamt').innerText);
+        
+        
+        alert("Werte für Anpassung 2 gespeichert!");
+    }
+
+
+    function Laden2() {
+        document.getElementById("Rfla").value = localStorage.getItem("Rfla2");
+        document.getElementById("Rsta").value = localStorage.getItem("Rsta2");
+        document.getElementById("Afla").value = localStorage.getItem("Afla2");
+        document.getElementById("Asta").value = localStorage.getItem("Asta2");
+        document.getElementById("SPHa").value = localStorage.getItem("SPHa2");
+        document.getElementById("CYLa").value = localStorage.getItem("CYLa2");
+        document.getElementById("Aa").value = localStorage.getItem("Aa2");
+        document.getElementById("HSAa").value = localStorage.getItem("HSAa2");
+        document.getElementById("Durchm").value = localStorage.getItem("Durchm2");
+        document.getElementById("Exa").value = localStorage.getItem("Exa2");
+        document.getElementById("Material").value = localStorage.getItem("Material2");
+        document.getElementById("Design").value = localStorage.getItem("Design2");
+        document.getElementById("Rfln").value = localStorage.getItem("Rfln2");
+        document.getElementById("Rstn").value = localStorage.getItem("Rstn2");
+        document.getElementById("SphMl").value = localStorage.getItem("SphMl2");
+        document.getElementById("ExMl").value = localStorage.getItem("ExMl2");
+        document.getElementById("DSA").value = localStorage.getItem("DSA2");
+        document.getElementById("KLDurchmesser").value = localStorage.getItem("KLDurchmesser2");
+        document.getElementById("SPHÜR").value = localStorage.getItem("SPHÜR2");
+        document.getElementById("CYLÜR").value = localStorage.getItem("CYLÜR2");
+        document.getElementById("AÜR").value = localStorage.getItem("AÜR2");
+        document.getElementById("HSAÜ").value = localStorage.getItem("HSAÜ2");
+        document.getElementById("SPHKL").value = localStorage.getItem("SPHKL2");
+        document.getElementById("CYLKL").value = localStorage.getItem("CYLKL2");
+        document.getElementById("AKL").value = localStorage.getItem("AKL2");
+        document.getElementById("HS1KL").value = localStorage.getItem("HS1KL2");
+        document.getElementById("AFl").value = localStorage.getItem("AFl2");
+        document.getElementById("RFl").value = localStorage.getItem("RFl2");
+        document.getElementById("HS2KL").value = localStorage.getItem("HS2KL2");
+        document.getElementById("ASt").value = localStorage.getItem("ASt2");
+        document.getElementById("RSt").value = localStorage.getItem("RSt2");
+        document.getElementById("Bestellzyl").innerText = localStorage.getItem("Bestellzyl2");
+        document.getElementById("BestellzylV").innerText = localStorage.getItem("BestellzylV2");
+        document.getElementById("Überrefraktion").innerText = localStorage.getItem("Überrefraktion2");
+        document.getElementById("AugeFL").innerText = localStorage.getItem("AugeFL2");
+        document.getElementById("AugeST").innerText = localStorage.getItem("AugeST2");
+        document.getElementById("TLFL").innerText = localStorage.getItem("TLFL2");
+        document.getElementById("TLST").innerText = localStorage.getItem("TLST2");
+        document.getElementById("KLFL").innerText = localStorage.getItem("KLFL2");
+        document.getElementById("KLST").innerText = localStorage.getItem("KLST2");
+        document.getElementById("ÜRFL").innerText = localStorage.getItem("ÜRFL2");
+        document.getElementById("ÜRST").innerText = localStorage.getItem("ÜRST2");
+        document.getElementById("AstiG").innerText = localStorage.getItem("AstiG2");
+        document.getElementById("AstiHH").innerText = localStorage.getItem("AstiHH2");
+        document.getElementById("AstiI").innerText = localStorage.getItem("AstiI2");
+        document.getElementById("IndKLAst").innerText = localStorage.getItem("IndKLAst2");
+        document.getElementById("IndKLAstBTC").innerText = localStorage.getItem("IndKLAstBTC2");
+        document.getElementById("IndLuftAst").innerText = localStorage.getItem("IndLuftAst2");
+        document.getElementById("IndLuftAstBTC").innerText = localStorage.getItem("IndLuftAstBTC2");
+        document.getElementById("Messlinse").innerText = localStorage.getItem("Messlinse2");
+        document.getElementById("Anpassung").innerText = localStorage.getItem("Anpassung2");
+        document.getElementById("ExtraTipp").innerText = localStorage.getItem("ExtraTipp2");
+        document.getElementById("ExtraTipp2").innerText = localStorage.getItem("ExtraTipp22");
+        document.getElementById("BTCSphäre").innerText = localStorage.getItem("BTCSphäre2");
+        document.getElementById("radiusFlach").innerText = localStorage.getItem("radiusFlach2");
+        document.getElementById("radiusSteil").innerText = localStorage.getItem("radiusSteil2");
+        document.getElementById("ZVorderfläche").innerText = localStorage.getItem("ZVorderfläche2");
+        document.getElementById("ZRückfläche").innerText = localStorage.getItem("ZRückfläche2");
+        document.getElementById("ZInsgesamt").innerText = localStorage.getItem("ZInsgesamt2");
+        alert("Werte für Anpassung 2 geladen!");
+    }
+
+
+    function Speichern3() {
+        localStorage.setItem("Rfla3", document.getElementById("Rfla").value);
+        localStorage.setItem("Rsta3", document.getElementById("Rsta").value);
+        localStorage.setItem("Afla3", document.getElementById("Afla").value);
+        localStorage.setItem("Asta3", document.getElementById("Asta").value);
+        localStorage.setItem("SPHa3", document.getElementById("SPHa").value);
+        localStorage.setItem("CYLa3", document.getElementById("CYLa").value);
+        localStorage.setItem("Aa3", document.getElementById("Aa").value);
+        localStorage.setItem("HSAa3", document.getElementById("HSAa").value);
+        localStorage.setItem("Durchm3", document.getElementById("Durchm").value);
+        localStorage.setItem("Exa3", document.getElementById("Exa").value);
+        localStorage.setItem("Material3", document.getElementById("Material").value);
+        localStorage.setItem("Design3", document.getElementById("Design").value);
+        localStorage.setItem("Rfln3", document.getElementById("Rfln").value);
+        localStorage.setItem("Rstn3", document.getElementById("Rstn").value);
+        localStorage.setItem("SphMl3", document.getElementById("SphMl").value);
+        localStorage.setItem("ExMl3", document.getElementById("ExMl").value);
+        localStorage.setItem("DSA3", document.getElementById("DSA").value);
+        localStorage.setItem("KLDurchmesser3", document.getElementById("KLDurchmesser").value);
+        localStorage.setItem("SPHÜR3", document.getElementById("SPHÜR").value);
+        localStorage.setItem("CYLÜR3", document.getElementById("CYLÜR").value);
+        localStorage.setItem("AÜR3", document.getElementById("AÜR").value);
+        localStorage.setItem("HSAÜ3", document.getElementById("HSAÜ").value);
+        localStorage.setItem("SPHKL3", document.getElementById("SPHKL").value);
+        localStorage.setItem("CYLKL3", document.getElementById("CYLKL").value);
+        localStorage.setItem("AKL3", document.getElementById("AKL").value);
+        localStorage.setItem("HS1KL3", document.getElementById("HS1KL").value);
+        localStorage.setItem("AFl3", document.getElementById("AFl").value);
+        localStorage.setItem("RFl3", document.getElementById("RFl").value);
+        localStorage.setItem("HS2KL3", document.getElementById("HS2KL").value);
+        localStorage.setItem("ASt3", document.getElementById("ASt").value);
+        localStorage.setItem("RSt3", document.getElementById("RSt").value);
+        localStorage.setItem("Bestellzyl3", document.getElementById("Bestellzyl").innerText);
+        localStorage.setItem("BestellzylV3", document.getElementById("BestellzylV").innerText);
+        localStorage.setItem("Überrefraktion3", document.getElementById("Überrefraktion").innerText);
+        localStorage.setItem("AugeFL3", document.getElementById("AugeFL").innerText);
+        localStorage.setItem("AugeST3", document.getElementById("AugeST").innerText);
+        localStorage.setItem("TLFL3", document.getElementById("TLFL").innerText);
+        localStorage.setItem("TLST3", document.getElementById("TLST").innerText);
+        localStorage.setItem("KLFL3", document.getElementById("KLFL").innerText);
+        localStorage.setItem("KLST3", document.getElementById("KLST").innerText);
+        localStorage.setItem("ÜRFL3", document.getElementById("ÜRFL").innerText);
+        localStorage.setItem("ÜRST3", document.getElementById("ÜRST").innerText);
+        localStorage.setItem("AstiG3", document.getElementById("AstiG").innerText);
+        localStorage.setItem("AstiHH3", document.getElementById("AstiHH").innerText);
+        localStorage.setItem("AstiI3", document.getElementById("AstiI").innerText);
+        localStorage.setItem("IndKLAst3", document.getElementById("IndKLAst").innerText);
+        localStorage.setItem("IndKLAstBTC3", document.getElementById("IndKLAstBTC").innerText);
+        localStorage.setItem("IndLuftAst3", document.getElementById("IndLuftAst").innerText);
+        localStorage.setItem("IndLuftAstBTC3", document.getElementById("IndLuftAstBTC").innerText);
+        localStorage.setItem("Messlinse3", document.getElementById("Messlinse").innerText);
+        localStorage.setItem("Anpassung3", document.getElementById("Anpassung").innerText);
+        localStorage.setItem("ExtraTipp3", document.getElementById('ExtraTipp').innerText);
+        localStorage.setItem("ExtraTipp23", document.getElementById('ExtraTipp2').innerText);
+        localStorage.setItem("BTCSphäre3", document.getElementById('BTCSphäre').innerText);
+        localStorage.setItem("radiusFlach3", document.getElementById('radiusFlach').innerText);
+        localStorage.setItem("radiusSteil3", document.getElementById('radiusSteil').innerText);
+        localStorage.setItem("ZVorderfläche3", document.getElementById('ZVorderfläche').innerText);
+        localStorage.setItem("ZRückfläche3", document.getElementById('ZRückfläche').innerText);
+        localStorage.setItem("ZInsgesamt3", document.getElementById('ZInsgesamt').innerText);
+        
+        alert("Werte für Anpassung 3 gespeichert!");
+    }
+
+
+    function Laden3() {
+        document.getElementById("Rfla").value = localStorage.getItem("Rfla3");
+        document.getElementById("Rsta").value = localStorage.getItem("Rsta3");
+        document.getElementById("Afla").value = localStorage.getItem("Afla3");
+        document.getElementById("Asta").value = localStorage.getItem("Asta3");
+        document.getElementById("SPHa").value = localStorage.getItem("SPHa3");
+        document.getElementById("CYLa").value = localStorage.getItem("CYLa3");
+        document.getElementById("Aa").value = localStorage.getItem("Aa3");
+        document.getElementById("HSAa").value = localStorage.getItem("HSAa3");
+        document.getElementById("Durchm").value = localStorage.getItem("Durchm3");
+        document.getElementById("Exa").value = localStorage.getItem("Exa3");
+        document.getElementById("Material").value = localStorage.getItem("Material3");
+        document.getElementById("Design").value = localStorage.getItem("Design3");
+        document.getElementById("Rfln").value = localStorage.getItem("Rfln3");
+        document.getElementById("Rstn").value = localStorage.getItem("Rstn3");
+        document.getElementById("SphMl").value = localStorage.getItem("SphMl3");
+        document.getElementById("ExMl").value = localStorage.getItem("ExMl3");
+        document.getElementById("DSA").value = localStorage.getItem("DSA3");
+        document.getElementById("KLDurchmesser").value = localStorage.getItem("KLDurchmesser3");
+        document.getElementById("SPHÜR").value = localStorage.getItem("SPHÜR3");
+        document.getElementById("CYLÜR").value = localStorage.getItem("CYLÜR3");
+        document.getElementById("AÜR").value = localStorage.getItem("AÜR3");
+        document.getElementById("HSAÜ").value = localStorage.getItem("HSAÜ3");
+        document.getElementById("SPHKL").value = localStorage.getItem("SPHKL3");
+        document.getElementById("CYLKL").value = localStorage.getItem("CYLKL3");
+        document.getElementById("AKL").value = localStorage.getItem("AKL3");
+        document.getElementById("HS1KL").value = localStorage.getItem("HS1KL3");
+        document.getElementById("AFl").value = localStorage.getItem("AFl3");
+        document.getElementById("RFl").value = localStorage.getItem("RFl3");
+        document.getElementById("HS2KL").value = localStorage.getItem("HS2KL3");
+        document.getElementById("ASt").value = localStorage.getItem("ASt3");
+        document.getElementById("RSt").value = localStorage.getItem("RSt3");
+        document.getElementById("Bestellzyl").innerText = localStorage.getItem("Bestellzyl3");
+        document.getElementById("BestellzylV").innerText = localStorage.getItem("BestellzylV3");
+        document.getElementById("Überrefraktion").innerText = localStorage.getItem("Überrefraktion3");
+        document.getElementById("AugeFL").innerText = localStorage.getItem("AugeFL3");
+        document.getElementById("AugeST").innerText = localStorage.getItem("AugeST3");
+        document.getElementById("TLFL").innerText = localStorage.getItem("TLFL3");
+        document.getElementById("TLST").innerText = localStorage.getItem("TLST3");
+        document.getElementById("KLFL").innerText = localStorage.getItem("KLFL3");
+        document.getElementById("KLST").innerText = localStorage.getItem("KLST3");
+        document.getElementById("ÜRFL").innerText = localStorage.getItem("ÜRFL3");
+        document.getElementById("ÜRST").innerText = localStorage.getItem("ÜRST3");
+        document.getElementById("AstiG").innerText = localStorage.getItem("AstiG3");
+        document.getElementById("AstiHH").innerText = localStorage.getItem("AstiHH3");
+        document.getElementById("AstiI").innerText = localStorage.getItem("AstiI3");
+        document.getElementById("IndKLAst").innerText = localStorage.getItem("IndKLAst3");
+        document.getElementById("IndKLAstBTC").innerText = localStorage.getItem("IndKLAstBTC3");
+        document.getElementById("IndLuftAst").innerText = localStorage.getItem("IndLuftAst3");
+        document.getElementById("IndLuftAstBTC").innerText = localStorage.getItem("IndLuftAstBTC3");
+        document.getElementById("Messlinse").innerText = localStorage.getItem("Messlinse3");
+        document.getElementById("Anpassung").innerText = localStorage.getItem("Anpassung3");
+        document.getElementById("ExtraTipp").innerText = localStorage.getItem("ExtraTipp3");
+        document.getElementById("ExtraTipp2").innerText = localStorage.getItem("ExtraTipp23");
+        document.getElementById("BTCSphäre").innerText = localStorage.getItem("BTCSphäre3");
+        document.getElementById("radiusFlach").innerText = localStorage.getItem("radiusFlach3");
+        document.getElementById("radiusSteil").innerText = localStorage.getItem("radiusSteil3");
+        document.getElementById("ZVorderfläche").innerText = localStorage.getItem("ZVorderfläche3");
+        document.getElementById("ZRückfläche").innerText = localStorage.getItem("ZRückfläche3");
+        document.getElementById("ZInsgesamt").innerText = localStorage.getItem("ZInsgesamt3");
+        alert("Werte für Anpassung 3 geladen!");
+    }
+
+
+    
+    </script>
+
+</html>

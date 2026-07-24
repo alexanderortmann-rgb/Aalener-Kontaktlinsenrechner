@@ -1,0 +1,258 @@
+/* 
+Copyright (c) 2025 [Alexander Ortmann] 
+Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT 
+*/
+
+
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e2e2e2;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+}
+
+h3 {
+    color: #333;
+}
+
+select {
+  width: 45%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #a6f0d8;
+}
+
+form {
+    background-color: #e9feec;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input[type="number"],
+button {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+button {
+    background-color: #96d196;
+    width: 100%;
+    color: #400040;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+
+
+#result {
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
+}
+
+.column {
+    float: left;
+    width: 28.5%;
+    padding: 15px;
+}
+.column2 {
+    float: left;
+    width: 50%;
+    padding: 15px;
+}
+
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.rowÜ::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*.row { display: flex; align-items: center; } 
+.column { display: flex; flex-direction: column; }
+*/
+@media screen and (max-width:600px) {
+    .column, .column2 {
+        width: 90%;
+    }
+}
+
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .info-btn {
+            background-color: #56a97d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 20px;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 0;
+        }
+        .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position des Tooltips */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.klText{
+	font-size:10px;
+}
+
+/*Hier nur zum schauen wegen Farbe, 
+muss in die html, geht irgendwie nicht */
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.rot { color: red; } 
+.blau { color: blue; } 
+.gruen { color: green; }
+
+
+
+/*
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: #111;
+}
+
+li.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+
+nav ul li a:hover,
+.dropdown:hover .dropbtn {
+    background-color: #0c0c0c;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #898989;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+*/
