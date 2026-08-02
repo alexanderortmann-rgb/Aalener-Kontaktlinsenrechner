@@ -20,11 +20,8 @@
         }
     };
         
-  
-    
 
-
-    function berechne() {
+    function berechne_HSA_SC() {
         // Einlesen
         var HSAa = parseFloat(document.getElementById('hsa1').value);
         var HSAn = parseFloat(document.getElementById('hsa2').value);
@@ -78,6 +75,16 @@
         }
     }
 
+
+    document.getElementById('a1').addEventListener('input', function() {
+    	var a1 = parseFloat(document.getElementById('a1').value);
+    	if (a1 < 0) {
+    	    a1 += 180;
+    	} else if (a1 >= 180) {
+    	    a1 -= 180;
+    	}
+    	document.getElementById('a1').value = a1;
+    });
 
 
   //Den Rundungswert einlesen
