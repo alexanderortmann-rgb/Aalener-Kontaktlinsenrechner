@@ -115,7 +115,15 @@ function initGeneralModalEvents() {
     };
 }
 
-        
+
+    // Müller-Quelle setzen
+    const Mueller = "Quelle: Müller-Treiber, A. (2017) Kontaktlinsen Know-how. 4. Aufl. Heidelberg: DOZ. ISBN 978-3-942873-17-8";
+
+    document.querySelectorAll('.Mueller').forEach(element => {
+        element.textContent = Mueller;
+    });
+}
+
 
 /*
   //Footer mit Infos laden
