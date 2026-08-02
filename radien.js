@@ -1,16 +1,3 @@
-
-
-    
-    document.getElementById('Aa').addEventListener('input', function() {
-    	var a = parseFloat(document.getElementById('Aa').value);
-    	if (a < 0) {
-    	    a += 180;
-    	} else if (a >= 180) {
-    	    a -= 180;
-    	}
-    	document.getElementById('Aa').value = a;
-    });
-
     function berechne_Rad_SC() {
         // Einlesen
         var Rfla = parseFloat(document.getElementById('Rfla').value);
