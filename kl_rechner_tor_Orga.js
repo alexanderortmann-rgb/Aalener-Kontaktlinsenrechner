@@ -8,6 +8,23 @@ function initKlRechnerTorEvents() {
     const AflaEl = document.getElementById('Afla');
     if (AflaEl) AflaEl.addEventListener('input', Afla);
 
+	const ExMlEl = document.getElementById('ExMl');
+    if (ExMlEl) {
+        ExnAlt = parseFloat(ExMlEl.value);
+    }
+	const RFlnEl = document.getElementById('Rfln');
+    if (RFlnEl) {
+        RFlnAlt = parseFloat(RFlnEl.value);
+    }
+	const KLDaltEl = document.getElementById('KLDurchmesser');
+    if (KLDaltEl) {
+        KLDurchAlt = parseFloat(KLDaltEl.value);
+    }
+
+	var ExnAlt = parseFloat(document.getElementById('ExMl').value);
+	var RFlnAlt = parseFloat(document.getElementById('Rfln').value);
+	var KLDurchAlt = parseFloat(document.getElementById('KLDurchmesser').value);
+	
     // Exzentrizität
     const ExaEl = document.getElementById('Exa');
     if (ExaEl) ExaEl.addEventListener('input', Exo);
