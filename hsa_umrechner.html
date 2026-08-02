@@ -110,7 +110,7 @@ li.dropdown {
         </div>
         <br>
         
-        <button type="button" onclick="berechne()">Umrechnen</button>
+        <button type="button" onclick="berechne_HSA_SC()">Umrechnen</button>
         <br>
         <p>Ergebnis: <br><br>Sph: <span id="SPHn">&emsp;&emsp;</span>
          dpt &nbsp; Cyl: <span id="CYLn">&emsp;&emsp;</span>
@@ -142,15 +142,7 @@ li.dropdown {
 </footer>
 <skript>
 
-	    document.getElementById('a1').addEventListener('input', function() {
-    	var a1 = parseFloat(document.getElementById('a1').value);
-    	if (a1 < 0) {
-    	    a1 += 180;
-    	} else if (a1 >= 180) {
-    	    a1 -= 180;
-    	}
-    	document.getElementById('a1').value = a1;
-    });
+
 	
 </skript>    
 
