@@ -58,6 +58,35 @@ window.onload = function() {
     	}
     	document.getElementById('Aa').value = a;
     });
+
+// Modaleinstellungen
+// Funktion zum Öffnen
+function openModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = "block";
+}
+
+// Funktion zum Schließen
+function closeModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = "none";
+}
+
+// Event-Listener für die X in den Modals
+var closeButtons = document.getElementsByClassName('close');
+for (var i = 0; i < closeButtons.length; i++) {
+    closeButtons[i].onclick = function() {
+        var modalId = this.getAttribute('data-modal');
+        closeModal(modalId);
+    };
+}
+
+// Schließen beim Klicken außerhalb des Fensters
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
+    }
+}
         
 
 /*
