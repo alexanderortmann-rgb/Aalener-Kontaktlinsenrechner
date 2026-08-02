@@ -1,14 +1,6 @@
 
  
-    document.getElementById('AÜR').addEventListener('input', function() {
-    	var a = parseFloat(document.getElementById('AÜR').value);
-    	if (a < 0) {
-    	    a += 180;
-    	} else if (a >= 180) {
-    	    a -= 180;
-    	}
-    	document.getElementById('AÜR').value = a;
-    });
+
     
     function ÜberrefraML(){
     	var Rfla, Rsta, Afla, Asta;
