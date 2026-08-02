@@ -111,3 +111,29 @@ function berechne_Rad_HH() {
         }
     }
     
+
+    function berechne_Rad_S() {
+        // Einlesen
+        var Rfla = parseFloat(document.getElementById('Rfla').value);
+        var Rfln = parseFloat(document.getElementById('Rfln').value);
+        var SPHa = parseFloat(document.getElementById('SPHa').value);
+        var Rundung = parseFloat(getRoundingValue());
+        
+        try {
+           
+            //Berechnungen
+            Rfla = Rfla / 1000;
+            Rfln = Rfln / 1000;
+
+            var STLfl = 0.336 * (1 / Rfla - 1 / Rfln);
+            var SPHn = SPHa + STLfl;
+            SPHn = round(SPHn,Rundung);
+
+            // Ergebnisanzeige
+            var Ergebnis =  SPHn
+            document.getElementById('SPHn').innerHTML = Ergebnis;
+
+        } catch (e) {
+            document.getElementById('SPHn').innerHTML = 'Invalid input';
+        }
+    }
