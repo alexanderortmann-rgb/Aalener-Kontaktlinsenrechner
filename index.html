@@ -84,7 +84,10 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
                 .then(r => r.text())
                 .then(html => {
                     document.getElementById('content').innerHTML = html;
-                    restoreValues();
+
+                    restoreValues();              // Eingaben wiederherstellen
+                    initGeneralModalEvents();     // Modal-Schließen-Events
+                    initMaterialienModalEvents(); // Modal-Öffnen-Events-Materialien
                 });
         }
 
