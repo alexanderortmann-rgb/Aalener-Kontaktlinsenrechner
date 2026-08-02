@@ -85,10 +85,11 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
                 .then(html => {
                     document.getElementById('content').innerHTML = html;
 
-                    restoreValues();              // Eingaben wiederherstellen
-                    initGeneralModalEvents();     // Modal-Schließen-Events
-                    initMaterialienModalEvents(); // Modal-Öffnen-Events-Materialien
-                    initFluoModalEvents(); // Modal-Öffnen-Events-Fluobilder
+                    restoreValues();               // Eingaben wiederherstellen
+                    initGeneralModalEvents();      // Modal-Schließen-Events
+                    initMaterialienModalEvents();  // Modal-Öffnen-Events-Materialien
+                    initFluoModalEvents();         // Modal-Öffnen-Events-Fluobilder
+                    initKlTorModalEvents();        //Modal-Öffnen-Events-KL-Rechner-Tor
                 });
         }
 
