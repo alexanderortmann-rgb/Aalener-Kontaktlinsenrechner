@@ -47,6 +47,17 @@ window.onload = function() {
     	}
     	document.getElementById('a2').value = a1;
     });
+
+    //Für Radienrechner
+    document.getElementById('Aa').addEventListener('input', function() {
+    	var a = parseFloat(document.getElementById('Aa').value);
+    	if (a < 0) {
+    	    a += 180;
+    	} else if (a >= 180) {
+    	    a -= 180;
+    	}
+    	document.getElementById('Aa').value = a;
+    });
         
 
 /*
