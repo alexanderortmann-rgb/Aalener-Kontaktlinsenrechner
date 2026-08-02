@@ -865,7 +865,7 @@ table {
         <br><br>
         <!--  -->
         
-        <details>
+         <details>
         <summary>BTC</summary>
         
         <p>
@@ -873,19 +873,34 @@ table {
         Daher wirkt die Linse optisch wie eine rotationssymmetrische Kontaktlinse.
         </p>
         <p>Eine bitorisch kompensierte Kontaktlinse hätte folgende technische Daten:</p>
-<ul class="list">
-    <li><strong>Radius flach:</strong> <span id="radiusFlach"></span></li>
-    <li><strong>Radius steil:</strong> <span id="radiusSteil"></span></li>
-    <li><strong>Sphäre:</strong> <span id="BTCSphäre"></span></li>
-    <li><strong>Zylinderwirkung:</strong>
-        <ul class="list">
-            <li><strong>Insgesamt:</strong> <span id="ZInsgesamt"></span></li>
-            <li><strong>Rückfläche:</strong> <span id="ZRückfläche"></span></li>
-            <li><strong>Vorderfläche:</strong> <span id="ZVorderfläche"></span></li>
-        </ul>
-    </li>
-</ul>
-
+		
+		<table class="tor-table">
+		    <tr>
+		        <th>Radius flach</th>
+		        <td><span id="radiusFlach"></span></td>
+		    </tr>
+		    <tr>
+		        <th>Radius steil</th>
+		        <td><span id="radiusSteil"></span></td>
+		    </tr>
+		    <tr>
+		        <th>Sphäre</th>
+		        <td><span id="BTCSphäre"></span></td>
+		    </tr>
+		    <tr>
+		        <th>Zylinderwirkung (gesamt)</th>
+		        <td><span id="ZInsgesamt"></span></td>
+		    </tr>
+		    <tr>
+		        <th>Zylinder Rückfläche</th>
+		        <td><span id="ZRückfläche"></span></td>
+		    </tr>
+		    <tr>
+		        <th>Zylinder Vorderfläche</th>
+		        <td><span id="ZVorderfläche"></span></td>
+		    </tr>
+		</table>
+		
 
         
         
@@ -896,149 +911,85 @@ table {
         <br>
         <h3>Refraktion</h3>
         
-       <div class="row">
-        <div class="column">
-        
-        </div>
-        <div class="column">
-        Hauptschnitt 1 
-        </div>
-        <div class="column">
-        Hauptschnitt 2 
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        Auge
-        </div>
-        <div class="column">
-        <span id="AugeFL"></span> 
-        </div>
-        <div class="column">
-        <span id="AugeST"></span> 
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        Tränenlinse
-        </div>
-        <div class="column">
-        <span id="TLFL"></span> 
-        </div>
-        <div class="column">
-        <span id="TLST"></span> 
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        Kontaktlinse
-        </div>
-        <div class="column">
-        <span id="KLFL"></span>
-        </div>
-        <div class="column">
-        <span id="KLST"></span>
-        </div>
-        </div>
-        
-        <div id="container">
-        <div class="rowÜ">
-        <div class="column">
-        Überrefraktion
-        </div>
-        <div class="column">
-        <span class="flachÜ" data-value="">
-        <span id="ÜRFL"></span> </span>
-        </div>
-        <div class="column">
-        <span class="steilÜ" data-value="">
-        <span id="ÜRST"></span> </span>
-        </div>
-        </div>
-        </div>
+		<table class="tor-table">
+		    <tr>
+		        <th></th>
+		        <th>Hauptschnitt 1</th>
+		        <th>Hauptschnitt 2</th>
+		    </tr>
+		    <tr>
+		        <td>Auge</td>
+		        <td><span id="AugeFL"></span></td>
+		        <td><span id="AugeST"></span></td>
+		    </tr>
+		    <tr>
+		        <td>Tränenlinse</td>
+		        <td><span id="TLFL"></span></td>
+		        <td><span id="TLST"></span></td>
+		    </tr>
+		    <tr>
+		        <td>Kontaktlinse</td>
+		        <td><span id="KLFL"></span></td>
+		        <td><span id="KLST"></span></td>
+		    </tr>
+		    <tr>
+		        <td>Überrefraktion</td>
+		        <td><span id="ÜRFL"></span></td>
+		        <td><span id="ÜRST"></span></td>
+		    </tr>
+		</table>
+
         
         <br>
         
         <h3>Astigmatismus</h3>
         
-        <div class="row">
-        <div class="column">
-        Astigmatismus gesamt
-        </div>
-        <div class="column">
-        <span id="AstiG"></span> 
-        </div>
-        <div class="column">
-        
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        Astigmatismus außen
-        </div>
-        <div class="column">
-        <span id="AstiHH"></span> 
-        </div>
-        <div class="column">
-        
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        Astigmatismus innen
-        </div>
-        <div class="column">
-        <span id="AstiI"></span> 
-        </div>
-        <div class="column">
-        
-        </div>
-        </div>
+		<table class="tor-table">
+		    <tr>
+		        <th>Astigmatismus</th>
+		        <th>Wert</th>
+		        
+		    </tr>
+		    <tr>
+		        <td>Gesamt</td>
+		        <td><span id="AstiG"></span></td>
+		        
+		    </tr>
+		    <tr>
+		        <td>Außen</td>
+		        <td><span id="AstiHH"></span></td>
+		        
+		    </tr>
+		    <tr>
+		        <td>Innen</td>
+		        <td><span id="AstiI"></span></td>
+		        
+		    </tr>
+		</table>
+
         
         <br>
         
         <h3>Induzierter Astigmatismus der Kontaktlinse</h3>
         
-        <div class="row">
-        <div class="column">
-        
-        </div>
-        <div class="column">
-        RT
-        </div>
-        <div class="column">
-        BTC
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        Auf der Hornhaut
-        </div>
-        <div class="column">
-        <span id="IndKLAst">&emsp;</span> 
-        </div>
-        <div class="column">
-        <span id="IndKLAstBTC">&emsp;</span> 
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="column">
-        In Luft
-        </div>
-        <div class="column">
-        <span id="IndLuftAst">&emsp;</span> 
-        </div>
-        <div class="column">
-        <span id="IndLuftAstBTC">&emsp;</span> 
-        </div>
-        </div>
+		<table class="tor-table">
+		    <tr>
+		        <th></th>
+		        <th>RT</th>
+		        <th>BTC</th>
+		    </tr>
+		    <tr>
+		        <td>Auf der Hornhaut</td>
+		        <td><span id="IndKLAst"></span></td>
+		        <td><span id="IndKLAstBTC"></span></td>
+		    </tr>
+		    <tr>
+		        <td>In Luft</td>
+		        <td><span id="IndLuftAst"></span></td>
+		        <td><span id="IndLuftAstBTC"></span></td>
+		    </tr>
+		</table>
+
         
         </details>
         <br>
