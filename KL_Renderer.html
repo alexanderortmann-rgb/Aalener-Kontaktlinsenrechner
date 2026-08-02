@@ -87,15 +87,102 @@ li.dropdown {
     
     <h1>Kontaktlinsen und Hornhautvisualisierer</h1>
 
-		<div class="controls">
-    <label>Radius:</label>
-    <input type="number" id="3D_R_KL_FL" value="8">
+	<div class="tab" id="tabHornhaut">
 
-    <label>Exzentrizität:</label>
-    <input type="number" id="3D_EX_KL" value="0">
+    <h3>Hornhautparameter</h3>
 
-    <button id="update3D">Aktualisieren</button>
-		</div>
+    <label>Radius flach (mm)</label>
+    <input type="number" id="R_flat">
+
+    <label>Radius steil (mm)</label>
+    <input type="number" id="R_steep">
+
+    <label>Achse flach (°)</label>
+    <input type="number" id="A_flat">
+
+    <label>Achse steil (°)</label>
+    <input type="number" id="A_steep">
+
+    <label>Hornhautdurchmesser (mm)</label>
+    <input type="number" id="cornea_diameter">
+
+    <label>Pupillendurchmesser (mm)</label>
+    <input type="number" id="pupil_diameter">
+
+    <h4>Exzentrizität</h4>
+
+    <select id="E_mode">
+        <option value="direct">Direkteingabe</option>
+        <option value="manual">Manuelle 4‑Meridian‑Messung</option>
+        <option value="csv">CSV‑Import</option>
+    </select>
+
+    <div id="E_direct" class="E_block">
+        <label>Exzentrizität (Q)</label>
+        <input type="number" id="E_value">
+    </div>
+
+    <div id="E_manual" class="E_block hide">
+        <label>Radius oben</label><input type="number" id="R_up">
+        <label>Radius unten</label><input type="number" id="R_down">
+        <label>Radius links</label><input type="number" id="R_left">
+        <label>Radius rechts</label><input type="number" id="R_right">
+    </div>
+
+    <div id="E_csv" class="E_block hide">
+        <label>Pentacam CSV laden</label>
+        <input type="file" id="E_file" accept=".csv">
+    </div>
+
+</div>
+
+		<div class="tab" id="tabKL">
+
+    <h3>Kontaktlinsenparameter</h3>
+
+    <label>Radius flach (mm)</label>
+    <input type="number" id="KL_R_flat">
+
+    <label>Radius steil (mm)</label>
+    <input type="number" id="KL_R_steep">
+
+    <h4>Sphäre / Zylinder</h4>
+
+    <select id="KL_power_mode">
+        <option value="sphcyl">Bestellwerte (Sph / Cyl / Achse)</option>
+        <option value="backfront">Rückfläche / Vorderfläche</option>
+    </select>
+
+    <div id="KL_sphcyl" class="KL_block">
+        <label>Sphäre</label><input type="number" id="KL_sph">
+        <label>Zylinder</label><input type="number" id="KL_cyl">
+        <label>Achse</label><input type="number" id="KL_axis">
+    </div>
+
+    <div id="KL_backfront" class="KL_block hide">
+        <label>Rückfläche</label><input type="number" id="KL_back">
+        <label>Vorderfläche</label><input type="number" id="KL_front">
+    </div>
+
+    <h4>Exzentrizität</h4>
+    <input type="number" id="KL_Q">
+
+    <h4>Mehrkurviges Design</h4>
+    <div id="KL_multi">
+        <div class="curveRow">
+            <label>Meridian</label><input type="number" class="KL_meridian">
+            <label>Radius</label><input type="number" class="KL_radius">
+        </div>
+    </div>
+
+    <button id="KL_addCurve">+</button>
+
+    <h4>Bevel</h4>
+    <label>Bevelbreite (mm)</label><input type="number" id="KL_bevel_width">
+    <label>Bevelradius (mm)</label><input type="number" id="KL_bevel_radius">
+
+</div>
+
     
     
     
