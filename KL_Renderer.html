@@ -1,1 +1,117 @@
+<!-- 
+Copyright (c) 2025 [Alexander Ortmann]
+Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="favicon.ico">
+    <title>HSA Umrechner</title>
+    
+    <style>
+   
 
+.columnn {
+    float: left;
+    width: 45.0%;
+    padding: 15px;
+}
+@media screen and (max-width:600px) {
+    .columnn {
+        width: 90%;
+    }
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: #111;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #b6b6b6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+</style>
+<link rel="stylesheet" href="Style_HTML.css">
+</head>
+<body>
+	
+	<ul id="Links"></ul>
+    
+    <br>
+    <div class="container">
+    
+    <h1>Kontaktlinsen und Hornhautvisualisierer</h1>
+    
+    
+    
+        <details>
+        <summary>Rundung auswählen: </summary>
+        
+        <br>
+        <input type="radio" id="round25" name="rounding" value="4" checked> 
+        <label for="round25">0,25</label>
+        
+        <input type="radio" id="round12" name="rounding" value="8"> 
+        <label for="round12">0,12</label>
+        
+        <input type="radio" id="round01" name="rounding" value="100"> 
+        <label for="round01">0,01</label>
+        
+        </details>
+        </div>
+        </body>
+   <footer>
+    <p>Alle Angaben ohne Gewähr.</p>
+  <span id="footer"></span>
+</footer>
+    <script>
+        
+    
+    </script>
+
+</html>
