@@ -881,9 +881,7 @@
     }
 
     
-    var ExnAlt = parseFloat(document.getElementById('ExMl').value);
-	var RFlnAlt = parseFloat(document.getElementById('Rfln').value);
-	var KLDurchAlt = parseFloat(document.getElementById('KLDurchmesser').value);
+   
  
  // Kram für die Exzentrizität
  function Exo() {
