@@ -122,7 +122,7 @@ function initGeneralModalEvents() {
     document.querySelectorAll('.Mueller').forEach(element => {
         element.textContent = Mueller;
     });
-}
+
 
 
 /*
