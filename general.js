@@ -59,6 +59,17 @@ window.onload = function() {
     	document.getElementById('Aa').value = a;
     });
 
+    // Für KL Rechner
+    document.getElementById('AÜR').addEventListener('input', function() {
+    	var a = parseFloat(document.getElementById('AÜR').value);
+    	if (a < 0) {
+    	    a += 180;
+    	} else if (a >= 180) {
+    	    a -= 180;
+    	}
+    	document.getElementById('AÜR').value = a;
+    });
+
 // Modaleinstellungen
 // Funktion zum Öffnen
 function openModal(modalId) {
