@@ -1,7 +1,4 @@
-
  
-
-    
     function ÜberrefraML(){
     	var Rfla, Rsta, Afla, Asta;
     	var Spha, Cyla, Aa, HSAa;
@@ -1077,30 +1074,26 @@
     
 
 
-    // Event-Listener für die ?-Button zum Öffnen
-    document.getElementById('btHelpFD').onclick = function() {
-        openModal('modHelpFD');
-    };
-    document.getElementById('btHelpSph').onclick = function() {
-        openModal('modHelpSph');
-    };
-    document.getElementById('btHelpEx').onclick = function() {
-        openModal('modHelpEx');
-    };
-    document.getElementById('btHelpExa').onclick = function() {
-        openModal('modHelpEx');
-    };
-    document.getElementById('btHelpDSA').onclick = function() {
-        openModal('modHelpDSA');
-    }; 
-    document.getElementById('btHelpAnpass').onclick = function() {
-        openModal('modHelpAnpass');
-    };
+  function initKlTorModalEvents() {
 
-    document.getElementById('btHelpDurch').onclick = function() {
-        openModal('modHelpDurch');
-    };
-    
+    const modalPairs = [
+        ['btHelpFD', 'modHelpFD'],
+        ['btHelpSph', 'modHelpSph'],
+        ['btHelpEx', 'modHelpEx'],
+        ['btHelpExa', 'modHelpEx'],   // gleiche Modal-ID wie btHelpEx
+        ['btHelpDSA', 'modHelpDSA'],
+        ['btHelpAnpass', 'modHelpAnpass'],
+        ['btHelpDurch', 'modHelpDurch']
+    ];
+
+    modalPairs.forEach(([btnId, modalId]) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.onclick = () => openModal(modalId);
+        }
+    });
+}
+
    
     
 
