@@ -14,5 +14,5 @@ function initFluoModalEvents() {
             btn.onclick = () => openModal(modalId);
         }
     });
-
+}
 
