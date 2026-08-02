@@ -204,6 +204,58 @@ ul {
 .gruen { color: green; }
 
 
+.tor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+
+    /* sehr sanfter Mint-Hintergrund */
+    background-color: #f3fdf7; 
+}
+
+/* Header-Zellen */
+.tor-table th {
+    background-color: #c8f5e4; /* weicheres Mint, weniger grell */
+    color: #333;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+
+    /* sehr dezenter schwarzer Rand */
+    border: 1px solid #000;
+}
+
+/* Daten-Zellen */
+.tor-table td {
+    background-color: #fafafa; /* leichtes Grau statt hartes Weiß */
+    padding: 12px 15px;
+
+    /* gleiche dezente schwarze Ränder */
+    border: 1px solid #000;
+}
+
+/* Mobile Optimierung */
+@media screen and (max-width:600px) {
+
+    .tor-table th,
+    .tor-table td {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+
+        border: 1px solid #000;
+        margin-bottom: 6px;
+    }
+
+    .tor-table th {
+        background-color: #c8f5e4;
+    }
+
+    .tor-table td {
+        background-color: #fafafa;
+    }
+}
 
 /*
 li {
