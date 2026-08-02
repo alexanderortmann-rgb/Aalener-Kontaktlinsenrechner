@@ -1,0 +1,80 @@
+<!-- 
+Copyright (c) 2025 [Alexander Ortmann]
+Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontaktlinsenrechner</title>
+
+    <!-- Dein globales CSS -->
+    <link rel="stylesheet" href="Style_HTML.css">
+
+    <style>
+        /* Container für dynamisch geladene Seiten */
+        #content {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation wird hier geladen -->
+    <ul id="Links"></ul>
+
+    <!-- Dynamischer Seitencontainer -->
+    <div id="content"></div>
+
+    <!-- Footer -->
+    <footer>
+        <span id="footer"></span>
+    </footer>
+
+    <script>
+
+        /* Navigation laden */
+        fetch('Links.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('Links').innerHTML = html;
+                setupSPA(); // Navigation nach dem Laden aktivieren
+            });
+
+        /* Footer laden */
+        fetch('footer.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('footer').innerHTML = html;
+            });
+
+        /* SPA-Light Navigation aktivieren */
+        function setupSPA() {
+            // Alle Links im Menü abfangen
+            document.querySelectorAll('#Links a').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Kein Seitenreload
+                    const page = this.getAttribute('href');
+                    loadPage(page);
+                });
+            });
+
+            // Startseite laden
+            loadPage('Home.html'); 
+        }
+
+        /* Seite dynamisch laden */
+        function loadPage(page) {
+            fetch(page)
+                .then(r => r.text())
+                .then(html => {
+                    document.getElementById('content').innerHTML = html;
+                });
+        }
+
+    </script>
+
+</body>
+</html>
