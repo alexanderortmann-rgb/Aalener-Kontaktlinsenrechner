@@ -98,6 +98,23 @@ window.onclick = function(event) {
         closeModal(event.target.id);
     }
 }
+
+function initGeneralModalEvents() {
+    var closeButtons = document.getElementsByClassName('close');
+    for (var i = 0; i < closeButtons.length; i++) {
+        closeButtons[i].onclick = function() {
+            var modalId = this.getAttribute('data-modal');
+            closeModal(modalId);
+        };
+    }
+
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            closeModal(event.target.id);
+        }
+    };
+}
+
         
 
 /*
