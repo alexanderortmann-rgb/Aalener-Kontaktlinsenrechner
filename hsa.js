@@ -1,4 +1,3 @@
-<script>
 
     function berechne_HSA_SC() {
         // Einlesen
@@ -125,7 +124,3 @@
     	}
     	document.getElementById('a1').value = a1;
     });
-
-    
-    </script>
-
