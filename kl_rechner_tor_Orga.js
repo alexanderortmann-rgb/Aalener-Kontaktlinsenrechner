@@ -144,21 +144,7 @@ function initKlTorModalEvents() {
   
 
   
-    
- //Das Individualfeld wird angezeigt
-   document.getElementById('Material').addEventListener('change', function() {
-              var selectedValue = this.value;
-              var nKl = document.getElementById('nKlContainer');
-              
-              // Feld verstecken
-              nKl.classList.add('hide');
 
-              if (selectedValue === 'Ind') {
-                  // Zeige Feld an
-                  nKl.classList.remove('hide');
-                  
-              }
-          });
    
   // Speichern und Laden der Daten
     function Speichern1() {
@@ -631,4 +617,20 @@ function initKlTorModalEvents() {
     document.getElementById('Afla').addEventListener('input', Afla);
  
 	document.getElementById('Exa').addEventListener('input', Exo);
+
+	    
+ //Das Individualfeld wird angezeigt
+   document.getElementById('Material').addEventListener('change', function() {
+              var selectedValue = this.value;
+              var nKl = document.getElementById('nKlContainer');
+              
+              // Feld verstecken
+              nKl.classList.add('hide');
+
+              if (selectedValue === 'Ind') {
+                  // Zeige Feld an
+                  nKl.classList.remove('hide');
+                  
+              }
+          });
     */
