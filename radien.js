@@ -72,3 +72,42 @@
         }
     }
     
+function berechne_Rad_HH() {
+        // Einlesen
+        var Rfla = parseFloat(document.getElementById('Rfla').value);
+        var Rfln = parseFloat(document.getElementById('Rfln').value);
+        var Rsta = parseFloat(document.getElementById('Rsta').value);
+        var Rstn = parseFloat(document.getElementById('Rstn').value);
+        var HS1 = parseFloat(document.getElementById('HS1').value);
+        var HS2 = parseFloat(document.getElementById('HS2').value);
+        
+        var Rundung = parseFloat(getRoundingValue());
+        
+        try {
+           
+        	Rfla = Rfla / 1000;
+            Rsta = Rsta / 1000;
+            Rfln = Rfln / 1000;
+            Rstn = Rstn / 1000;
+            
+            var STLfl = 0.336 * (1 / Rfla - 1 / Rfln);
+            var STLst = 0.336 * (1 / Rsta - 1 / Rstn);
+            
+            var HS1n = HS1 + STLfl;
+            var HS2n = HS2 + STLst;
+            
+            
+            HS1n = round(HS1n,Rundung);
+            HS2n = round(HS2n,Rundung);
+        	
+
+            document.getElementById('HS1n').innerHTML = HS1n;
+            document.getElementById('HS2n').innerHTML = HS2n;
+            
+
+        } catch (e) {
+            document.getElementById('HS1n').innerHTML = 'Invalid input';
+            document.getElementById('HS2n').innerHTML = 'Invalid input';
+        }
+    }
+    
