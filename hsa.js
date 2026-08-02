@@ -114,13 +114,3 @@
         }
     }
 
-
-    document.getElementById('a1').addEventListener('input', function() {
-    	var a1 = parseFloat(document.getElementById('a1').value);
-    	if (a1 < 0) {
-    	    a1 += 180;
-    	} else if (a1 >= 180) {
-    	    a1 -= 180;
-    	}
-    	document.getElementById('a1').value = a1;
-    });
