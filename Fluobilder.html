@@ -379,66 +379,8 @@ li.dropdown {
 </footer>
     <script>
         
-  //Footer mit Infos laden
-    fetch('footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer').innerHTML = data;
-      })
-    .catch(error => console.error('Error loading footer.html:', error));
   
-  //Head mit Links laden
-    fetch('Links.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('Links').innerHTML = data;
-      })
-    .catch(error => console.error('Error loading Links.html:', error));
-    
-        // Funktion zum Öffnen
-        function openModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "block";
-        }
 
-        // Funktion zum Schließen
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-
-        // Event-Listener für die ?-Button zum Öffnen
-        document.getElementById('btHelpSt').onclick = function() {
-            openModal('modHelpSt');
-        };
-        document.getElementById('btHelpPl').onclick = function() {
-            openModal('modHelpPl');
-        };
-        document.getElementById('btHelpFl').onclick = function() {
-            openModal('modHelpFl');
-        };
-
-        // Event-Listener für die X in den Modals
-        var closeButtons = document.getElementsByClassName('close');
-        for (var i = 0; i < closeButtons.length; i++) {
-            closeButtons[i].onclick = function() {
-                var modalId = this.getAttribute('data-modal');
-                closeModal(modalId);
-            };
-        }
-
-        // Schließen beim Klicken außerhalb des Fensters
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                closeModal(event.target.id);
-            }
-        }
-        
-        var Mueller = "Quelle: Müller-Treiber, A. (2017) Kontaktlinsen Know-how. 4. Aufl. Heidelberg: DOZ. ISBN 978-3-942873-17-8";
-        // document.getElementById('Müller').textContent = Mueller;
-        document.querySelectorAll('.Mueller').forEach(element => {
-         element.textContent = Mueller;
-     });
     </script>
 
 </html>
