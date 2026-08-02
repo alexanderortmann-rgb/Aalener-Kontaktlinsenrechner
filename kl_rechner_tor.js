@@ -1075,17 +1075,7 @@
         });
  
     
- // Funktion zum Öffnen
-    function openModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-    }
 
-    // Funktion zum Schließen
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
 
     // Event-Listener für die ?-Button zum Öffnen
     document.getElementById('btHelpFD').onclick = function() {
@@ -1111,78 +1101,9 @@
         openModal('modHelpDurch');
     };
     
-    // Event-Listener für die X in den Modals
-    var closeButtons = document.getElementsByClassName('close');
-    for (var i = 0; i < closeButtons.length; i++) {
-        closeButtons[i].onclick = function() {
-            var modalId = this.getAttribute('data-modal');
-            closeModal(modalId);
-        };
-    }
-
-    // Schließen beim Klicken außerhalb des Fensters
-    window.onclick = function(event) {
-        if (event.target.classList.contains('modal')) {
-            closeModal(event.target.id);
-        }
-    }
+   
     
-    //Den Rundungswert einlesen
-   function getRoundingValue() {
-    	var radios = document.querySelector('input[name="rounding"]:checked');
-    	return radios ? parseFloat(radios.value) : 4;
-    }
 
-    function round(value, interval) {
-        return Math.round(value * interval) / interval;
-    }
-    
-    
-    
-    //Das sollte das hin und herrechnen mit Powervektoren deutlich leichter machen
-    
-    function PowerinLinse(M, J0, J45) {
-        var Sph = M + Math.sqrt(J0 * J0 + J45 * J45);
-        var Cyl = -2 * Math.sqrt(J0 * J0 + J45 * J45);
-        var A = 0.5 * Math.atan(J45 / J0);
-        
-        A = A * (180 / Math.PI);
-
-        if (A + (J0 < 0 ? 0 : 90) < 0) {
-            A = A + (J0 < 0 ? 0 : 90) + 180;
-        } else {
-            A = A + (J0 < 0 ? 0 : 90);
-        }
-
-        if (A <= 90) {
-            A = A + 90;
-        } else {
-            A = A - 90;
-        }
-
-        A = Math.round(A);
-        if (J45==0 && J0==0){A=0;}
-
-        return {
-            Sph: Sph,
-            Cyl: Cyl,
-            A: A
-        };
-    }
-
-    function LinseinPower(Sph, Cyl, A) {
-    	A = A/180*Math.PI;
-        var M = Sph + Cyl / 2;
-        var J0 = -1 * Cyl / 2 * Math.cos(2 * A);
-        var J45 = -1 * Cyl / 2 * Math.sin(2 * A);
-
-        if(Cyl==0){J0=0;J45=0;}
-        return {
-            M: M,
-            J0: J0,
-            J45: J45
-        };
-    }
     
     function changeFontSize(delta) {
         var cells = document.getElementsByTagName('td');
@@ -1193,30 +1114,9 @@
         }
     }
     
-    document.getElementById('Aa').addEventListener('input', function() {
-    	var a = parseFloat(document.getElementById('Aa').value);
-    	if (a < 0) {
-    	    a += 180;
-    	} else if (a >= 180) {
-    	    a -= 180;
-    	}
-    	document.getElementById('Aa').value = a;
-    });
-
-  //Head mit Links laden
-    fetch('Links.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('Links').innerHTML = data;
-      })
-    .catch(error => console.error('Error loading Links.html:', error));
   
-    
-    var Mueller = "Quelle: Müller-Treiber, A. (2017) Kontaktlinsen Know-how. 4. Aufl. Heidelberg: DOZ. ISBN 978-3-942873-17-8";
-   // document.getElementById('Müller').textContent = Mueller;
-   document.querySelectorAll('.Mueller').forEach(element => {
-    element.textContent = Mueller;
-});
+
+  
     
  //Das Individualfeld wird angezeigt
    document.getElementById('Material').addEventListener('change', function() {
