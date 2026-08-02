@@ -75,9 +75,27 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
                 .then(r => r.text())
                 .then(html => {
                     document.getElementById('content').innerHTML = html;
+                    restoreValues();
                 });
         }
 
+        document.addEventListener("input", e => {
+    if (e.target.id) {
+        localStorage.setItem(e.target.id, e.target.value);
+    }
+});
+
+        function restoreValues() {
+    document.querySelectorAll("[id]").forEach(el => {
+        let val = localStorage.getItem(el.id);
+        if (val !== null) {
+            if (el.tagName === "INPUT") el.value = val;
+            else el.textContent = val;
+        }
+    });
+}
+
+        
 
 
     </script>
