@@ -71,8 +71,25 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
                 .then(r => r.text())
                 .then(html => {
                     document.getElementById('content').innerHTML = html;
+                    loadScriptsFrom(html);
                 });
         }
+
+        function loadScriptsFrom(html) {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    temp.querySelectorAll('script').forEach(oldScript => {
+        const newScript = document.createElement('script');
+        if (oldScript.src) {
+            newScript.src = oldScript.src;
+        } else {
+            newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+    });
+}
+
 
     </script>
 
