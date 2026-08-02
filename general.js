@@ -1,5 +1,3 @@
-<script>
-
 //Den Rundungswert einlesen
     function getRoundingValue() {
     	var radios = document.querySelector('input[name="rounding"]:checked');
@@ -31,6 +29,7 @@ window.onload = function() {
     };
         
 
+/*
   //Footer mit Infos laden
     fetch('footer.html')
       .then(response => response.text())
@@ -46,5 +45,4 @@ window.onload = function() {
         document.getElementById('Links').innerHTML = data;
       })
     .catch(error => console.error('Error loading Links.html:', error)); 
-
-</script>
+*/
