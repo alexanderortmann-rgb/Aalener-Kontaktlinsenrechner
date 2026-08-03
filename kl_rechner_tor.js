@@ -172,6 +172,32 @@
     
     //Berechnung der Bestelllinse
     function KLVorschlag(){
+
+		const selectElement = document.getElementById('Material');
+
+    // Wenn das Select nicht existiert → Funktion abbrechen
+    if (!selectElement) {
+        console.warn("Material-Select existiert nicht (SPA-Seitenwechsel).");
+        return;
+    }
+
+    // Wenn keine Optionen existieren → abbrechen
+    if (!selectElement.options || selectElement.options.length === 0) {
+        console.warn("Material-Select hat keine Optionen.");
+        return;
+    }
+
+    // Wenn kein Eintrag ausgewählt ist → abbrechen
+    if (selectElement.selectedIndex < 0) {
+        console.warn("Material-Select hat keinen ausgewählten Index.");
+        return;
+    }
+
+    // Jetzt sicher auslesen
+    const materialValue = selectElement.options[selectElement.selectedIndex].value;
+
+    console.log("Material:", materialValue);
+		
     	
     	//Einlesen der Daten
     	var nLuft = 1;
