@@ -98,3 +98,138 @@ function animate() {
 function initRendererUI() {
     document.getElementById("updateRenderer").onclick = updateRendererValues;
 }
+
+
+
+// UI der KL Renderer Seite
+
+function initKLUI() {
+    initTabs();
+    initExMode();
+    initKLPowerMode();
+    initFormatting();
+}
+
+/* Tabs Hornhaut / KL */
+function initTabs() {
+    const tabs = document.querySelectorAll('.tab');
+    const buttons = document.querySelectorAll('.tabButton');
+
+    function activateTab(id) {
+        tabs.forEach(t => t.classList.remove('active'));
+        buttons.forEach(b => b.classList.remove('active'));
+
+        const tab = document.getElementById(id);
+        const btn = document.querySelector(`.tabButton[data-tab="${id}"]`);
+
+        if (tab) tab.classList.add('active');
+        if (btn) btn.classList.add('active');
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-tab');
+            activateTab(id);
+        });
+    });
+
+    // Standard: Hornhaut aktiv
+    activateTab('tabHornhaut');
+}
+
+/* Exzentrizität: nur relevanter Block sichtbar */
+function initExMode() {
+    const select = document.getElementById('E_mode');
+    if (!select) return;
+
+    const blocks = document.querySelectorAll('.E_block');
+
+    function updateExMode() {
+        const mode = select.value; // "direct", "manual", "csv"
+        blocks.forEach(b => b.classList.add('hide'));
+        const active = document.getElementById('E_' + mode);
+        if (active) active.classList.remove('hide');
+    }
+
+    select.addEventListener('change', updateExMode);
+    updateExMode();
+}
+
+/* KL: Sphäre/Zylinder vs. Rück-/Vorderfläche */
+function initKLPowerMode() {
+    const select = document.getElementById('KL_power_mode');
+    if (!select) return;
+
+    const blocks = document.querySelectorAll('.KL_block');
+
+    function updateKLMode() {
+        const mode = select.value; // "sphcyl" oder "backfront"
+        blocks.forEach(b => b.classList.add('hide'));
+        const active = document.getElementById('KL_' + mode);
+        if (active) active.classList.remove('hide');
+    }
+
+    select.addEventListener('change', updateKLMode);
+    updateKLMode();
+}
+
+/* Formatierung der Eingaben */
+function initFormatting() {
+    // Radien: 2 Nachkommastellen
+    const radiusIds = [
+        'R_flat', 'R_steep',
+        'R_up', 'R_down', 'R_left', 'R_right',
+        'KL_R_flat', 'KL_R_steep',
+        'KL_back', 'KL_front',
+        'KL_radius' // erste Zeile im Mehrkurvigen Design
+    ];
+
+    radiusIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('blur', () => formatNumber(el, 2));
+    });
+
+    // Durchmesser: 1 Nachkommastelle
+    const diameterIds = [
+        'cornea_diameter',
+        'pupil_diameter',
+        'KL_bevel_width',
+        'KL_bevel_radius'
+    ];
+
+    diameterIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('blur', () => formatNumber(el, 1));
+    });
+
+    // Exzentrizität / Sphäre / Zylinder / Rück-/Vorderfläche: 2 Nachkommastellen
+    const powerIds = [
+        'E_value',
+        'KL_Q',
+        'KL_sph',
+        'KL_cyl',
+        'KL_back',
+        'KL_front'
+    ];
+
+    powerIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('blur', () => formatNumber(el, 2));
+    });
+}
+
+/* Hilfsfunktion: Zahl formatieren */
+function formatNumber(input, decimals) {
+    const val = parseFloat(input.value.replace(',', '.'));
+    if (isNaN(val)) return;
+    input.value = val.toFixed(decimals).replace('.', ','); // wenn du Komma willst
+}
+
+/* Aufruf nach Laden der Seite */
+document.addEventListener('DOMContentLoaded', () => {
+    initKLUI();
+});
+
