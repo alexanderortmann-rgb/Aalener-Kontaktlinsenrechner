@@ -89,7 +89,7 @@ function applyAsphericity(geometry, Q) {
         const r = Math.sqrt(v.x * v.x + v.y * v.y);
         const R = geometry.parameters.radius;
 
-        const z_asph = (r * r) / (R * (1 + Math.sqrt(1 - (1 + Q) * (r * r) / (R * R)))));
+        const z_asph = (r * r) / (R * (1 + Math.sqrt(1 - (1 + Q) * (r * r) / (R * R))));
         v.z = z_asph;
     });
     geometry.computeVertexNormals();
