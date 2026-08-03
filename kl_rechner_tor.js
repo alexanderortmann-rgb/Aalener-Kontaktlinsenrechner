@@ -231,7 +231,7 @@ let KLDurchAlt = 0;
 		}
 
     	
-		var nKl = document.getElementById("Material").value;
+		nKl = document.getElementById("Material").value;
     	
     	if (nKl==="Ind"){
     		nKl = parseFloat(document.getElementById("nKl").value);
