@@ -1,8 +1,7 @@
 let scene, camera, renderer;
-let corneaMesh;
+let corneaMesh, klMesh, controls;
 
 function initKLRenderer() {
-
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf0f0f0);
 
@@ -16,10 +15,9 @@ function initKLRenderer() {
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth * 0.7, window.innerHeight * 0.7);
-
     document.getElementById("rendererCanvas").appendChild(renderer.domElement);
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
     controls.rotateSpeed = 0.5;
@@ -30,22 +28,19 @@ function initKLRenderer() {
     light.position.set(50, 50, 50);
     scene.add(light);
 
-    corneaMesh = createCorneaMesh(7.8, 7.6, 11.5, 0.2);
+    // Start-Hornhaut
+    corneaMesh = createCorneaMesh(7.8, 11.5, 0.2);
     scene.add(corneaMesh);
 
-    function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-    }
+    // Start-KL (optional)
+    klMesh = createKLMesh(8.0, 14.0, 0.3);
+    scene.add(klMesh);
 
-
-    
-
+    animate();
 }
 
-function createCorneaMesh(R_flat, R_steep, diameter, Q) {
-    const geometry = new THREE.SphereGeometry(R_flat, 64, 64);
+function createCorneaMesh(R, diameter, Q) {
+    const geometry = new THREE.SphereGeometry(R, 64, 64);
     applyAsphericity(geometry, Q);
 
     const material = new THREE.MeshPhongMaterial({
@@ -55,7 +50,23 @@ function createCorneaMesh(R_flat, R_steep, diameter, Q) {
     });
 
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.scale.set(diameter / (2 * R_flat), diameter / (2 * R_flat), 1);
+    mesh.scale.set(diameter / (2 * R), diameter / (2 * R), 1);
+    return mesh;
+}
+
+function createKLMesh(R, diameter, Q) {
+    const geometry = new THREE.SphereGeometry(R, 64, 64);
+    applyAsphericity(geometry, Q);
+
+    const material = new THREE.MeshPhongMaterial({
+        color: 0xffaa88,
+        transparent: true,
+        opacity: 0.5
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.scale.set(diameter / (2 * R), diameter / (2 * R), 1);
+    mesh.position.z = 0.2; // leicht vor der Hornhaut
     return mesh;
 }
 
@@ -66,10 +77,12 @@ function applyAsphericity(geometry, Q) {
     for (let i = 0; i < pos.count; i++) {
         const x = pos.getX(i);
         const y = pos.getY(i);
-
         const r = Math.sqrt(x * x + y * y);
 
-        const z_asph = (r * r) / (R * (1 + Math.sqrt(1 - (1 + Q) * (r * r) / (R * R))));
+        const underRoot = 1 - (1 + Q) * (r * r) / (R * R);
+        if (underRoot <= 0) continue; // Sicherheitscheck
+
+        const z_asph = (r * r) / (R * (1 + Math.sqrt(underRoot)));
         pos.setZ(i, z_asph);
     }
 
@@ -80,24 +93,37 @@ function applyAsphericity(geometry, Q) {
 function updateRendererValues() {
     const Rf = parseFloat(document.getElementById("R_flat").value);
     const dia = parseFloat(document.getElementById("cornea_diameter").value);
-    const Q = parseFloat(document.getElementById("E_value").value) || 0;
+    const Qc = parseFloat(document.getElementById("E_value").value) || 0;
 
+    const KL_Rf = parseFloat(document.getElementById("KL_R_flat").value);
+    const KL_dia = parseFloat(document.getElementById("cornea_diameter").value); // oder eigenes Feld
+    const KL_Q = parseFloat(document.getElementById("KL_Q").value) || 0;
+
+    // Hornhaut
     corneaMesh.geometry.dispose();
     corneaMesh.geometry = new THREE.SphereGeometry(Rf, 64, 64);
-    applyAsphericity(corneaMesh.geometry, Q);
+    applyAsphericity(corneaMesh.geometry, Qc);
     corneaMesh.scale.set(dia / (2 * Rf), dia / (2 * Rf), 1);
-
     corneaMesh.visible = document.getElementById("showCornea").checked;
+
+    // KL
+    klMesh.geometry.dispose();
+    klMesh.geometry = new THREE.SphereGeometry(KL_Rf, 64, 64);
+    applyAsphericity(klMesh.geometry, KL_Q);
+    klMesh.scale.set(KL_dia / (2 * KL_Rf), KL_dia / (2 * KL_Rf), 1);
+    klMesh.visible = document.getElementById("showKL").checked;
 }
 
 function animate() {
     requestAnimationFrame(animate);
+    controls.update();
     renderer.render(scene, camera);
 }
 
 function initRendererUI() {
     document.getElementById("updateRenderer").onclick = updateRendererValues;
 }
+
 
 
 /*###########################################################################################################*/
