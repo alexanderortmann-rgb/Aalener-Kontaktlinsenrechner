@@ -7,69 +7,64 @@ function initKlRechnerTorEvents() {
     // Afla
     const AflaEl = document.getElementById('Afla');
     if (AflaEl) AflaEl.addEventListener('input', Afla);
-    
-	const RFlnEl = document.getElementById('Rfln');
-    if (RFlnEl) {
-        RFlnAlt = parseFloat(RFlnEl.value);
-    }
-	const KLDaltEl = document.getElementById('KLDurchmesser');
-    if (KLDaltEl) {
-        KLDurchAlt = parseFloat(KLDaltEl.value);
-    }
 
-	
-	
+    // Initialwerte setzen
+    const ExMlEl = document.getElementById('ExMl');
+    if (ExMlEl) ExnAlt = parseFloat(ExMlEl.value) || 0;
+
+    const RflnEl = document.getElementById('Rfln');
+    if (RflnEl) RFlnAlt = parseFloat(RflnEl.value) || 0;
+
+    const KLDEl = document.getElementById('KLDurchmesser');
+    if (KLDEl) KLDurchAlt = parseFloat(KLDEl.value) || 0;
+
     // Exzentrizität
     const ExaEl = document.getElementById('Exa');
     if (ExaEl) ExaEl.addEventListener('input', Exo);
 
-    // ExMl
-    const ExMlEl = document.getElementById('ExMl');
-	
+    // ExMl Listener
     if (ExMlEl) {
         ExMlEl.addEventListener('input', function() {
             if (document.getElementById('checkExn').checked) {
-                var Exn = parseFloat(this.value);
-                var Delta = Exn - ExnAlt;
-                var Rfl = document.getElementById('Rfln');
-                Rfl.value = parseFloat(Rfl.value) - Delta;
-                Rfl.value = Math.round(Rfl.value * 20) / 20;
+                const Exn = parseFloat(this.value);
+                const Delta = Exn - ExnAlt;
+
+                const Rfl = document.getElementById('Rfln');
+                Rfl.value = Math.round((parseFloat(Rfl.value) - Delta) * 20) / 20;
+
                 ExnAlt = Exn;
             }
         });
     }
 
-    // KLDurchmesser
-    const KLDurchEl = document.getElementById('KLDurchmesser');
-    if (KLDurchEl) {
-        KLDurchEl.addEventListener('input', function() {
+    // KLDurchmesser Listener
+    if (KLDEl) {
+        KLDEl.addEventListener('input', function() {
             if (document.getElementById('checkExn').checked) {
-                var KLDn = parseFloat(this.value);
-                var Delta = KLDn - KLDurchAlt;
-                var Exn = parseFloat(document.getElementById('ExMl').value);
+                const KLDn = parseFloat(this.value);
+                const Delta = KLDn - KLDurchAlt;
+                const Exn = parseFloat(document.getElementById('ExMl').value);
 
-                var Rfl = document.getElementById('Rfln');
-                if (Exn == 0) {
-                    if (Math.abs(Delta) >= 0.25) {
-                        Rfl.value = parseFloat(Rfl.value) + Math.round((Delta / 5) * 20) / 20;
-                        Rfl.value = Math.round(Rfl.value * 20) / 20;
-                        KLDurchAlt = KLDn;
-                    }
+                const Rfl = document.getElementById('Rfln');
+
+                if (Exn === 0 && Math.abs(Delta) >= 0.25) {
+                    Rfl.value = Math.round((parseFloat(Rfl.value) + Delta / 5) * 20) / 20;
+                    KLDurchAlt = KLDn;
                 }
             }
         });
     }
 
-    // Rfln
-    const RflnEl = document.getElementById('Rfln');
+    // Rfln Listener
     if (RflnEl) {
         RflnEl.addEventListener('input', function() {
             if (document.getElementById('checkExn').checked) {
-                var Rfl = parseFloat(this.value);
-                var Delta = Rfl - RFlnAlt;
-                var Exn = document.getElementById('ExMl');
-                Exn.value = parseFloat(Exn.value) - Delta;
-                Exn.value = Math.round(Exn.value * 20) / 20;
+                const Rfl = parseFloat(this.value);
+                const Delta = Rfl - RFlnAlt;
+
+                const Exn = document.getElementById('ExMl');
+                Exn.value = Math.round((parseFloat(Exn.value) - Delta) * 20) / 20;
+
                 RFlnAlt = Rfl;
             }
         });
@@ -79,14 +74,14 @@ function initKlRechnerTorEvents() {
     const DesignEl = document.getElementById('Design');
     if (DesignEl) {
         DesignEl.addEventListener('change', function() {
-            var selectedValue = this.value;
-            var Rfln = document.getElementById('RFN');
-            var Rstn = document.getElementById('RSN');
+            const selectedValue = this.value;
+            const Rfln = document.getElementById('RFN');
+            const Rstn = document.getElementById('RSN');
 
             Rfln.classList.add('hide');
             Rstn.classList.add('hide');
 
-            if (selectedValue === 'RT') {
+            if (selectedValue === 'RT' || selectedValue === 'BTC') {
                 Rfln.classList.remove('hide');
                 Rstn.classList.remove('hide');
                 RFNLabel.textContent = "Radius flach (mm)";
@@ -94,11 +89,6 @@ function initKlRechnerTorEvents() {
             } else if (selectedValue === 'SPH') {
                 Rfln.classList.remove('hide');
                 RFNLabel.textContent = "Radius (mm)";
-            } else if (selectedValue === 'BTC') {
-                Rfln.classList.remove('hide');
-                Rstn.classList.remove('hide');
-                RFNLabel.textContent = "Radius flach (mm)";
-                RSNLabel.textContent = "Radius steil (mm)";
             }
         });
     }
@@ -107,14 +97,8 @@ function initKlRechnerTorEvents() {
     const MaterialEl = document.getElementById('Material');
     if (MaterialEl) {
         MaterialEl.addEventListener('change', function() {
-            var selectedValue = this.value;
-            var nKl = document.getElementById('nKlContainer');
-
-            nKl.classList.add('hide');
-
-            if (selectedValue === 'Ind') {
-                nKl.classList.remove('hide');
-            }
+            const nKl = document.getElementById('nKlContainer');
+            nKl.classList.toggle('hide', this.value !== 'Ind');
         });
     }
 }
