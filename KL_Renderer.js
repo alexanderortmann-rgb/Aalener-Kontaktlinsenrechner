@@ -19,6 +19,13 @@ function initKLRenderer() {
 
     document.getElementById("rendererCanvas").appendChild(renderer.domElement);
 
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.rotateSpeed = 0.5;
+    controls.zoomSpeed = 0.6;
+    controls.panSpeed = 0.6;
+
     const light = new THREE.PointLight(0xffffff, 1);
     light.position.set(50, 50, 50);
     scene.add(light);
@@ -26,7 +33,15 @@ function initKLRenderer() {
     corneaMesh = createCorneaMesh(7.8, 7.6, 11.5, 0.2);
     scene.add(corneaMesh);
 
-    animate();
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+
+    
+
 }
 
 function createCorneaMesh(R_flat, R_steep, diameter, Q) {
