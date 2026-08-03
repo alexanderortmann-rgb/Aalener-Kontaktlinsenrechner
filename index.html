@@ -90,8 +90,8 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
                     initGeneralModalEvents();      // Modal-Schließen-Events
                     initMaterialienModalEvents();  // Modal-Öffnen-Events-Materialien
                     initFluoModalEvents();         // Modal-Öffnen-Events-Fluobilder
-                    initKlTorModalEvents();        //Modal-Öffnen-Events-KL-Rechner-Tor
-                    initKlRechnerTorEvents();
+                    //initKlTorModalEvents();        //Modal-Öffnen-Events-KL-Rechner-Tor
+                    //initKlRechnerTorEvents();
                     
                     initMobileInputs();
                     initAxisInputs();
@@ -114,13 +114,21 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
 
         function restoreValues() {
     document.querySelectorAll("[id]").forEach(el => {
-        let val = localStorage.getItem(el.id);
+        const val = localStorage.getItem(el.id);
         if (val !== null) {
-            if (el.tagName === "INPUT") el.value = val;
-            else el.textContent = val;
+            if (
+                el.tagName === "INPUT" ||
+                el.tagName === "SELECT" ||
+                el.tagName === "TEXTAREA"
+            ) {
+                el.value = val;
+            } else {
+                el.textContent = val;
+            }
         }
     });
 }
+
 
         
 
