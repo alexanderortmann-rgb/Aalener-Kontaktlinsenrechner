@@ -1,4 +1,8 @@
- 
+let ExnAlt = 0;
+let RFlnAlt = 0;
+let KLDurchAlt = 0;
+
+
     function ÜberrefraML(){
     	var Rfla, Rsta, Afla, Asta;
     	var Spha, Cyla, Aa, HSAa;
