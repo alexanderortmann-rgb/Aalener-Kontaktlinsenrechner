@@ -230,7 +230,7 @@
     	
     	//Material und Rundung
     	var Ma = document.getElementById('Material').value;
-    	var selectElement = document.getElementById('Material');
+    	//var selectElement = document.getElementById('Material');
     	var Mat = parseFloat(selectElement.options[selectElement.selectedIndex].value);
     	
 		var nKl = document.getElementById("Material").value;
