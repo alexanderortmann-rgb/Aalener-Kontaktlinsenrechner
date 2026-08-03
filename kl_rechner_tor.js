@@ -231,6 +231,8 @@
     	//Material und Rundung
     	var Ma = document.getElementById('Material').value;
     	//var selectElement = document.getElementById('Material');
+		const selectElement = document.getElementById('Material');
+
 		
     	var Mat = parseFloat(selectElement.options[selectElement.selectedIndex].value);
     	
