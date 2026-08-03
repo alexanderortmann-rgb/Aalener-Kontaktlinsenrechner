@@ -100,6 +100,7 @@ function initRendererUI() {
 }
 
 
+/*###########################################################################################################*/
 
 // UI der KL Renderer Seite
 
@@ -116,15 +117,31 @@ function initTabs() {
     const buttons = document.querySelectorAll('.tabButton');
 
     function activateTab(id) {
-        tabs.forEach(t => t.classList.remove('active'));
-        buttons.forEach(b => b.classList.remove('active'));
+    const tabs = document.querySelectorAll('.tab');
+    const buttons = document.querySelectorAll('.tabButton');
 
-        const tab = document.getElementById(id);
-        const btn = document.querySelector(`.tabButton[data-tab="${id}"]`);
+    tabs.forEach(t => t.classList.remove('active'));
+    buttons.forEach(b => b.classList.remove('active'));
 
-        if (tab) tab.classList.add('active');
-        if (btn) btn.classList.add('active');
+    const tab = document.getElementById(id);
+    const btn = document.querySelector(`.tabButton[data-tab="${id}"]`);
+
+    if (tab) {
+        tab.classList.add('active');
+
+        // Papier-Animation
+        anime({
+            targets: tab,
+            opacity: [0, 1],
+            translateY: [-20, 0],
+            rotateZ: [-3, 0],
+            duration: 500,
+            easing: 'easeOutQuad'
+        });
     }
+    if (btn) btn.classList.add('active');
+}
+
 
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
