@@ -17,9 +17,7 @@ function initKlRechnerTorEvents() {
         KLDurchAlt = parseFloat(KLDaltEl.value);
     }
 
-	var ExnAlt = parseFloat(document.getElementById('ExMl').value);
-	var RFlnAlt = parseFloat(document.getElementById('Rfln').value);
-	var KLDurchAlt = parseFloat(document.getElementById('KLDurchmesser').value);
+	
 	
     // Exzentrizität
     const ExaEl = document.getElementById('Exa');
@@ -647,4 +645,9 @@ function initKlTorModalEvents() {
                   
               }
           });
-    */
+    
+	var ExnAlt = parseFloat(document.getElementById('ExMl').value);
+	var RFlnAlt = parseFloat(document.getElementById('Rfln').value);
+	var KLDurchAlt = parseFloat(document.getElementById('KLDurchmesser').value);
+	
+	*/
