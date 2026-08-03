@@ -7,11 +7,7 @@ function initKlRechnerTorEvents() {
     // Afla
     const AflaEl = document.getElementById('Afla');
     if (AflaEl) AflaEl.addEventListener('input', Afla);
-
-	//const ExMlEl = document.getElementById('ExMl');
-    //if (ExMlEl) {
-    //    ExnAlt = parseFloat(ExMlEl.value);
-    //}
+    
 	const RFlnEl = document.getElementById('Rfln');
     if (RFlnEl) {
         RFlnAlt = parseFloat(RFlnEl.value);
@@ -31,6 +27,7 @@ function initKlRechnerTorEvents() {
 
     // ExMl
     const ExMlEl = document.getElementById('ExMl');
+	
     if (ExMlEl) {
         ExMlEl.addEventListener('input', function() {
             if (document.getElementById('checkExn').checked) {
