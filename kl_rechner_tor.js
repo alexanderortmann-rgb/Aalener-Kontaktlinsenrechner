@@ -240,7 +240,6 @@
     	
     	//Vorschlag der KL
     	
-    	
     	var SPHKL //= parseFloat(document.getElementById('SPHKL').value);
     	var CYLKL //= parseFloat(document.getElementById('CYLKL').value);
     	var AKL //= parseFloat(document.getElementById('AKL').value);
