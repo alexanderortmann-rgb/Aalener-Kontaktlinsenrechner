@@ -216,12 +216,16 @@
     	var HSAÜ = parseFloat(document.getElementById('HSAÜ').value);
     	
     	//Material und Rundung
-    	var Ma = document.getElementById('Material').value;
-    	//var selectElement = document.getElementById('Material');
-		const selectElement = document.getElementById('Material');
-
+		const materialValue2 = document.getElementById('Material').value;
 		
-    	var Mat = parseFloat(selectElement.options[selectElement.selectedIndex].value);
+		let nKl = materialValue2;
+		
+		if (nKl === "Ind") {
+		    nKl = parseFloat(document.getElementById("nKl").value);
+		} else {
+		    nKl = parseFloat(nKl);
+		}
+
     	
 		var nKl = document.getElementById("Material").value;
     	
