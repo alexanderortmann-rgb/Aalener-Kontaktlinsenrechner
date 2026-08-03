@@ -278,6 +278,9 @@ ul {
     color: #fff;
 }
 
+.hide{
+	display: none;
+}
 
 /*
 li {
