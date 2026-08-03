@@ -257,6 +257,28 @@ ul {
     }
 }
 
+// Tab Section
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.tabButton {
+    padding: 8px 16px;
+    border: none;
+    background: #ccc;
+    cursor: pointer;
+}
+
+.tabButton.active {
+    background: #888;
+    color: #fff;
+}
+
+
 /*
 li {
     float: left;
