@@ -99,22 +99,22 @@ li.dropdown {
     <h3>Hornhautparameter</h3>
 
     <label>Radius flach (mm)</label>
-    <input type="number" id="R_flat">
+    <input type="number" id="R_flat" value="8" step="0.01">
 
     <label>Radius steil (mm)</label>
-    <input type="number" id="R_steep">
+    <input type="number" id="R_steep" value="8" step="0.01">
 
     <label>Achse flach (°)</label>
-    <input type="number" id="A_flat">
+    <input type="number" id="A_flat" value="0" step="1">
 
     <label>Achse steil (°)</label>
-    <input type="number" id="A_steep">
+    <input type="number" id="A_steep" value="90" step="1">
 
     <label>Hornhautdurchmesser (mm)</label>
-    <input type="number" id="cornea_diameter">
+    <input type="number" id="cornea_diameter" value="12" step="0.01">
 
     <label>Pupillendurchmesser (mm)</label>
-    <input type="number" id="pupil_diameter">
+    <input type="number" id="pupil_diameter" value="3" step="0.01">
 
     <h4>Exzentrizität</h4>
 
@@ -126,14 +126,14 @@ li.dropdown {
 
     <div id="E_direct" class="E_block">
         <label>Exzentrizität (Q)</label>
-        <input type="number" id="E_value">
+        <input type="number" id="E_value" value="0.3" step="0.01">
     </div>
 
     <div id="E_manual" class="E_block hide">
-        <label>Radius oben</label><input type="number" id="R_up">
-        <label>Radius unten</label><input type="number" id="R_down">
-        <label>Radius links</label><input type="number" id="R_left">
-        <label>Radius rechts</label><input type="number" id="R_right">
+        <label>Radius oben</label><input type="number" id="R_up" value="8" step="0.01">
+        <label>Radius unten</label><input type="number" id="R_down" value="8" step="0.01">
+        <label>Radius links</label><input type="number" id="R_left" value="8" step="0.01">
+        <label>Radius rechts</label><input type="number" id="R_right" value="8" step="0.01">
     </div>
 
     <div id="E_csv" class="E_block hide">
@@ -148,10 +148,10 @@ li.dropdown {
     <h3>Kontaktlinsenparameter</h3>
 
     <label>Radius flach (mm)</label>
-    <input type="number" id="KL_R_flat">
+    <input type="number" id="KL_R_flat" value="8" step="0.01">
 
     <label>Radius steil (mm)</label>
-    <input type="number" id="KL_R_steep">
+    <input type="number" id="KL_R_steep" value="8" step="0.01">
 
     <h4>Sphäre / Zylinder</h4>
 
@@ -161,32 +161,32 @@ li.dropdown {
     </select>
 
     <div id="KL_sphcyl" class="KL_block">
-        <label>Sphäre</label><input type="number" id="KL_sph">
-        <label>Zylinder</label><input type="number" id="KL_cyl">
-        <label>Achse</label><input type="number" id="KL_axis">
+        <label>Sphäre</label><input type="number" id="KL_sph" value="0" step="0.25">
+        <label>Zylinder</label><input type="number" id="KL_cyl" value="0" step="0.25">
+        <label>Achse</label><input type="number" id="KL_axis" value="0" step="1">
     </div>
 
     <div id="KL_backfront" class="KL_block hide">
-        <label>Rückfläche</label><input type="number" id="KL_back">
-        <label>Vorderfläche</label><input type="number" id="KL_front">
+        <label>Rückfläche</label><input type="number" id="KL_back" value="0" step="0.01">
+        <label>Vorderfläche</label><input type="number" id="KL_front" value="0" step="0.01">
     </div>
 
     <h4>Exzentrizität</h4>
-    <input type="number" id="KL_Q">
+    <input type="number" id="KL_Q" value="0.3" step="0.01">
 
     <h4>Mehrkurviges Design</h4>
     <div id="KL_multi">
         <div class="curveRow">
             <label>Meridian</label><input type="number" class="KL_meridian">
-            <label>Radius</label><input type="number" class="KL_radius">
+            <label>Radius</label><input type="number" class="KL_radius" value="8" step="0.01">
         </div>
     </div>
 
     <button id="KL_addCurve">+</button>
 
     <h4>Bevel</h4>
-    <label>Bevelbreite (mm)</label><input type="number" id="KL_bevel_width">
-    <label>Bevelradius (mm)</label><input type="number" id="KL_bevel_radius">
+    <label>Bevelbreite (mm)</label><input type="number" id="KL_bevel_width" value="1" step="0.01">
+    <label>Bevelradius (mm)</label><input type="number" id="KL_bevel_radius" value="10" step="0.01">
 
 </div>
 
