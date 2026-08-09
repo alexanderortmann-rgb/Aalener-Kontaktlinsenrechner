@@ -30,7 +30,6 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
 
 
 
-
     
     <script src="hsa.js"></script>
     <script src="radien.js"></script>
@@ -63,14 +62,16 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
             .then(html => {
                 document.getElementById('Links').innerHTML = html;
                 setupSPA(); // Navigation nach dem Laden aktivieren
-            });
+            })
+            .catch(err => console.error('Fehler beim Laden von Links.html:', err));
 
         /* Footer laden */
         fetch('footer.html')
             .then(r => r.text())
             .then(html => {
                 document.getElementById('footer').innerHTML = html;
-            });
+            })
+            .catch(err => console.error('Fehler beim Laden von footer.html:', err));
 
         /* SPA-Light Navigation aktivieren */
         function setupSPA() {
@@ -87,6 +88,17 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
             loadPage('Home.html'); 
         }
 
+        // Führt eine Init-Funktion sicher aus: ein Fehler in einer Funktion
+        // darf nicht verhindern, dass die restlichen Init-Funktionen laufen
+        // (genau das ist vorhin beim Materialien-Dropdown passiert).
+        function safeCall(fn, ...args) {
+            try {
+                if (typeof fn === 'function') fn(...args);
+            } catch (err) {
+                console.error(`Fehler in ${fn && fn.name ? fn.name : 'Init-Funktion'}:`, err);
+            }
+        }
+
         /* Seite dynamisch laden */
         function loadPage(page) {
             fetch(page)
@@ -94,40 +106,53 @@ Lizensiert unter der MIT-Lizenz: https://opensource.org/licenses/MIT
                 .then(html => {
                     document.getElementById('content').innerHTML = html;
 
-                    restoreValues();               // Eingaben wiederherstellen
-                    initGeneralModalEvents();      // Modal-Schließen-Events
-                    initMaterialienModalEvents();  // Modal-Öffnen-Events-Materialien
-                    initFluoModalEvents();         // Modal-Öffnen-Events-Fluobilder
-                    //initKlTorModalEvents();        //Modal-Öffnen-Events-KL-Rechner-Tor
-                    //initKlRechnerTorEvents();
-                    
-                    initMobileInputs();
-                    initAxisInputs();
-                    initMueller();
+                    safeCall(restoreValues);               // Eingaben wiederherstellen
+                    safeCall(initGeneralModalEvents);      // Modal-Schließen-Events
+                    safeCall(initMaterialienModalEvents);  // Modal-Öffnen-Events-Materialien
+                    safeCall(initFluoModalEvents);         // Modal-Öffnen-Events-Fluobilder
+
+                    safeCall(initMobileInputs);
+                    safeCall(initAxisInputs);
+                    safeCall(initMueller);
 
                     if (page === 'KL Rechner Tor.html') {
-                        initKlRechnerTorEvents();
-                        initKlTorModalEvents();
+                        safeCall(initKlRechnerTorEvents);
+                        safeCall(initKlTorModalEvents);
                     }
 
                     if (page === 'KL_Renderer.html') {
-                        initKLRenderer();
-                        initRendererUI();
+                        safeCall(initKLUI);
+                        safeCall(initKLRenderer);
+                        safeCall(initRendererUI);
                     }
 
                     
-                });
+                })
+                .catch(err => console.error(`Fehler beim Laden von ${page}:`, err));
         }
 
         document.addEventListener("input", e => {
     if (e.target.id) {
-        localStorage.setItem(e.target.id, e.target.value);
+        try {
+            localStorage.setItem(e.target.id, e.target.value);
+        } catch (err) {
+            console.warn('localStorage nicht verfügbar, Eingabe wird nicht gespeichert:', err);
+        }
     }
 });
 
         function restoreValues() {
+    let storageAvailable = true;
     document.querySelectorAll("[id]").forEach(el => {
-        const val = localStorage.getItem(el.id);
+        if (!storageAvailable) return;
+        let val;
+        try {
+            val = localStorage.getItem(el.id);
+        } catch (err) {
+            console.warn('localStorage nicht verfügbar, gespeicherte Werte werden nicht wiederhergestellt:', err);
+            storageAvailable = false;
+            return;
+        }
         if (val !== null) {
             if (
                 el.tagName === "INPUT" ||
